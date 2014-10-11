@@ -22,7 +22,7 @@
             
             <!-- Postavke za spajanje na bazu podataka -->			
 			<!-- ===================================== -->
-			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/mysqlDB" />
+			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/mysqldb" />
 			<property name="hibernate.connection.username" value="user" />
 			<property name="hibernate.connection.password" value="passwd" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect " />
