@@ -8,7 +8,7 @@ TESTIRANJE/POKRETANJE
 
 Za testiranje odnosno pokretanje aplikacije potreban je webserver apache tomcat. Preuzmite najnoviju verziju: http://tomcat.apache.org/
 
-Uz to vam je potreban mysql server: http://www.mysql.com/downloads/
+Uz to vam je potreban mysql server: http://dev.mysql.com/downloads/mysql/
 Skinite si database i workbench za jednostavan rad. Za trenutne potrebe
 napravite bazu koja se zove 'mysqlDB', a user i pass su 'user' i 'passwd'. Port ak nije zadan mora biti 3306 (default od mysql).
 
