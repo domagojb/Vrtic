@@ -1,5 +1,10 @@
 package hr.fer.zemris.opp.servlets;
 
+import hr.fer.zemris.opp.dao.DAOProvider;
+import hr.fer.zemris.opp.dao.jpa.JPADAOImpl;
+import hr.fer.zemris.opp.model.users.User;
+import hr.fer.zemris.opp.password.PasswordHasher;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,53 +28,71 @@ public class Index extends HttpServlet{
 	 * Nemam pojma kaj je ovo, al bar ne baca warning.
 	 */
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Klasa koja opisuje osobu sa njezinim imenom i prezimenom.
-	 * 
-	 * Napravljeno radi primjera.
-	 * 
-	 * @author domagoj
-	 *
-	 */
-	public class Osoba {
-		private String ime;
-		private String prezime;
-		
-		Osoba(String ime, String prezime) {
-			this.ime = ime;
-			this.prezime = prezime;
-		}
-		
-		public String getIme() {
-			return ime;
-		}
-		
-		public String getPrezime() {
-			return prezime;
-		}
-	}
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-		// Kreiram listu osoba
-		List<Osoba> osobe = new ArrayList<>();
-		osobe.add(new Osoba("Domagoj", "Boroš"));
-		osobe.add(new Osoba("Ivan", "Hrastinski"));
-		osobe.add(new Osoba("Ivan", "Mandić"));
-		osobe.add(new Osoba("Karlo", "čečura"));
-		osobe.add(new Osoba("Zvonimir", "Gračak"));
-		osobe.add(new Osoba("Vedran", "Komorčec"));
-		osobe.add(new Osoba("Ivo", "Zubović"));
-		
-		// Tu listu mapiram u atribut koji se zove 'korisnici' i njega mogu
-		// koristiti u .jsp datotekama
-		req.setAttribute("korisnici", osobe);
-		
-		// Kazem servletu da kad obradi podatke iznad da otvori index.jsp
-		// ovo je spranca
 		req.getRequestDispatcher("/WEB-INF/pages/index.jsp").forward(req, resp);
+	}
+	
+	/**
+	 * The post method on this served will be called when someone attepmts a login.
+	 * 
+	 * The login info must be in the parameters "username" and "password".
+	 * If there is an error (the user doesn't exist, wrong password) an error message
+	 * will be set in the parameter "loginError". If there is no error then loginError
+	 * will be <code>null</code>.
+	 * 
+	 */
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		
+		req.setAttribute("loginError", null);
+		
+		String username = req.getParameter("username");
+		if(username == null) {
+			req.setAttribute("loginError", "Korisničko ime ili zaporka je progrešna.");
+			doGet(req, resp);
+			return;
+		}
+		
+		String password = req.getParameter("password");
+		if(password == null) {
+			req.setAttribute("loginError", "Korisničko ime ili zaporka je progrešna.");
+			doGet(req, resp);
+			return;
+		}
+		
+		User user = checkLogin(username, password);
+		
+		if(user == null) {
+			req.setAttribute("loginError", "Korisničko ime ili zaporka je progrešna");
+			doGet(req, resp);
+			return;
+		}
+		
+		req.getSession().setAttribute("current.user.id", user.getId());
+		req.getSession().setAttribute("current.user.fn", user.getFirstName());
+		req.getSession().setAttribute("current.user.ln", user.getLastName());
+		req.getSession().setAttribute("current.user.nick", user.getNick());
+		req.getSession().setAttribute("current.user.t", user.getType());
+		
+		req.getRequestDispatcher("/WEB-INF/pages/index.jsp").forward(req, resp);
+	}
+
+	/**
+	 * Check if the login is right. If it is return
+	 * the {@link BlogUser} that should be loged in. 
+	 * 
+	 * @param username of the user
+	 * @param password of the user
+	 * @return {@link BlogUser} with information of the loged in user or <code>null</code> if
+	 * there is no such user, i.e. the login information is bad
+	 */
+	private User checkLogin(String username, String password) {
+		User user = DAOProvider.getDAO().getUser(username, PasswordHasher.getHexHash(password));
+		return user;
 	}
 }
