@@ -6,7 +6,7 @@
   </head>
   
   <body style="background-color: purple;">
-  	<h1 style="color:white;">There has been an error! What did you do?!</h1>
+  	<h1 style="color:white;">Pogreška!</h1>
   	<p style="color:white;">${userErrorMessage}</p>
   </body>
 </html>

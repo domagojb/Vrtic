@@ -19,21 +19,30 @@ import hr.fer.zemris.opp.model.users.User;
 public interface DAO {
 
 	/**
-	 * Returns the {@link BlogUser} with the given <code>username</code>(or nick rather) and
+	 * Returns the {@link User} with the given <code>username</code>(or nick rather) and
 	 * <code>passwordHash</code>. If there is no such user returns <code>null</code>.
 	 * 
 	 * @param username of the user to get
 	 * @param passwordHash hashed password of the user to get
-	 * @return {@link BlogUser} or <code>null</code> if that user doesn't exist
+	 * @return {@link User} or <code>null</code> if that user doesn't exist
 	 * @throws DAOException on error selecting user
 	 */
 	public User getUser(String username, String passwordHash) throws DAOException;
 	
 	/**
+	 * Returns the {@link User} with given <code>id</code>.
+	 * 
+	 * @param id of the user to fetch
+	 * @return User with given id or <code>null</code> if he doesn't exist
+	 * @throws DAOException on error selecting user
+	 */
+	public User getUser(long id) throws DAOException;
+	
+	/**
 	 * Inserts a user into the database. Make sure to check if the user with given nickname
 	 * already exists in the database before inserting.
 	 * 
-	 * @param user the {@link BlogUser} to insert
+	 * @param user the {@link User} to insert
 	 * @throws DAOException on error inserting into database
 	 */
 	public void insertUser(User user) throws DAOException;
@@ -64,17 +73,56 @@ public interface DAO {
 	 */
 	public void removeUser(String nick) throws DAOException;
 	
+	/**
+	 * <b>NOT IMPLEMENTED</b>
+	 * @param id
+	 * @return
+	 * @throws DAOException
+	 */
 	public Child getChild(long id) throws DAOException;
 	
+	/**
+	 * <b>NOT IMPLEMENTED</b>
+	 * @param child
+	 * @throws DAOException
+	 */
 	public void insertChild(Child child) throws DAOException;
 	
 	public List<Child> getChildrenInGroup(Group group) throws DAOException;
 	
+	/**
+	 * Returns {@link Workplace} with given <code>id</code>.
+	 * 
+	 * @param id of the workplace to fetch
+	 * @return {@link Workplace} with given id, or <code>null</code> if it doesn't exist
+	 * @throws DAOException on error retrieving {@link Workplace}
+	 */
 	public Workplace getWorkplace(long id) throws DAOException;
 	
+	/**
+	 * Returns a list of all workspaces.
+	 * 
+	 * @return a list of all workspaces
+	 * @throws DAOException on error retrieving list
+	 */
+	public List<Workplace> getAllWorkplaces() throws DAOException;
+	
+	/**
+	 * Inserts a new {@link Workplace} into the database.
+	 * 
+	 * @param workplace to insert
+	 * @throws DAOException on error inserting
+	 */
 	public void insertWorplace(Workplace workplace) throws DAOException;
 	
 	public List<Group> getGroupsInWorkplace(Workplace workplace) throws DAOException;
 	
 	public List<User> getUsersForGroup(Group group) throws DAOException;
+
+	/**
+	 * Insert group into database.
+	 * 
+	 * @param g group to insert
+	 */
+	public void insertGroup(Group g);
 }

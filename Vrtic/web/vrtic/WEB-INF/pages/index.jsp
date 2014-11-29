@@ -5,20 +5,38 @@
     <title>Vrtic buducnosti</title>
   </head>
   <body>
-    <p>Članovi grupe dboppg:</p>
-    <ol>
-    	<!--  jednostava foreach petlja kojom mogu prolaziti kroz liste :)
-    	svaki prolaz stavit ce jedan element u var korisnik -->
-		<c:forEach var="korisnik" items="${korisnici}">
-			<!--  jsp ocekuje da su razredi kojima zelimo dohvatiti atribute
-			napisani po java beans standardu (imaju get i set metode koje sadrze 
-			nazive atributa. npr za String ime postoji getIme();;;;
-			on to onda interno parsisra i prevodi u java kod i izvrsi -->
-			<li>${korisnik.ime} ${korisnik.prezime}</li>		
-		</c:forEach>
-		<!--  unutar jspa moguce je i direktno pisati java kod (isto ko i php)
-		al je to nepreporucljivo jer postoje ovi jednostavni htmlu slicni tagovi
-		ko sto je foreach -->
-    </ol>
+  	<c:choose>
+      <c:when test="${sessionScope['current.user.id'] != null}">
+        <p>Trenutno ste ulogirani kao ${sessionScope['current.user.fn']} ${sessionScope['current.user.ln']} <a href="logout">Logout</a></p>
+        <c:choose>
+          <c:when test="${sessionScope['current.user.t'] == 'adm'}">
+            <a href="${pageContext.servletContext.contextPath}/userpanel">Administrativni panel</a>
+          </c:when>
+          <c:when test="${sessionScope['current.user.t'] == 'edu'}">
+            <a href="${pageContext.servletContext.contextPath}/userpanel">Odgajateljni panel</a>          
+          </c:when>
+          <c:when test="${sessionScope['current.user.t'] == 'acc'}">
+            <a href="${pageContext.servletContext.contextPath}/userpanel">Računovodstveni panel</a>
+          </c:when>
+        </c:choose>
+      </c:when>
+      <c:otherwise>
+      	<p>Trenutno niste ulogirani.</p>
+      	<!-- Login form -->
+	    <form method="post">
+	    <table>
+	      <tr><td>Korisničko ime</td><td> <input type="text" name="username"  size ="40"></td></tr>
+		  <tr><td>Zaporka</td><td> <input type="password" name="password"  size ="40"></td></tr>
+		  <tr><td colspan="2"><c:if test="${loginError != null}">
+		                          <div class="greska"><c:out value="${loginError}" /></div>
+		                      </c:if></td></tr>
+		  <tr><td></td><td><input type="submit" name="loginMethod" value="Login"></td></tr>
+		 </table>
+	    </form>
+	    <!-- End login form -->
+      </c:otherwise>
+    </c:choose>
+      
+    
   </body>
 </html>

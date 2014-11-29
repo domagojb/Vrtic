@@ -2,26 +2,74 @@ package hr.fer.zemris.opp.model;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+/**
+ * A child in the system.
+ * 
+ * @author domagoj
+ *
+ */
+@Entity
+@Table(name="children")
 public class Child {
 
+	/**
+	 * Unique identifier.
+	 */
 	private long id;
 	
+	/**
+	 * First name of the child.
+	 */
 	private String firstName;
 	
+	/**
+	 * Child's last name.
+	 */
 	private String lastName;
 	
+	/**
+	 * Child's OIB number.
+	 */
 	private String oib;
 	
+	/**
+	 * The childs parent.
+	 */
 	private Parent parent;
 	
+	/**
+	 * The sex of the child.
+	 */
 	private String sex;
 	
+	/**
+	 * Childs birthdate.
+	 */
 	private Date birthdate;
 	
+	/**
+	 * Priority in the queque.
+	 */
 	private byte priority;
 	
-	private Group group;
+	/**
+	 * Group that this child belongs too.
+	 */
+	private Group group = null;
+	
+	public Child() {
+	}
 
+	@Id @GeneratedValue
 	public long getId() {
 		return id;
 	}
@@ -30,6 +78,7 @@ public class Child {
 		this.id = id;
 	}
 
+	@Column(length=40, nullable=false)
 	public String getFirstName() {
 		return firstName;
 	}
@@ -38,6 +87,7 @@ public class Child {
 		this.firstName = firstName;
 	}
 
+	@Column(length=40, nullable=false)
 	public String getLastName() {
 		return lastName;
 	}
@@ -46,14 +96,17 @@ public class Child {
 		this.lastName = lastName;
 	}
 
+	@Column(length=40, nullable=false)
 	public String getOib() {
 		return oib;
 	}
-
+	
 	public void setOib(String oib) {
 		this.oib = oib;
 	}
 
+	@ManyToOne
+	@JoinColumn(nullable=false)
 	public Parent getParent() {
 		return parent;
 	}
@@ -62,14 +115,23 @@ public class Child {
 		this.parent = parent;
 	}
 
+	@Column(length=1, nullable=false)
 	public String getSex() {
 		return sex;
 	}
 
-	public void setSex(String sex) {
+	/**
+	 * The sex of the child.
+	 * Can only be "M" or "F". Throws {@link IllegalArgumentException} if not.
+	 * 
+	 * @param sex of the child, can only be "M" or "F".
+	 * @throws IllegalArgumentException on bad argument
+	 */
+	public void setSex(String sex) throws IllegalArgumentException {
 		this.sex = sex;
 	}
 
+	@Column
 	public Date getBirthdate() {
 		return birthdate;
 	}
@@ -78,6 +140,7 @@ public class Child {
 		this.birthdate = birthdate;
 	}
 
+	@Basic
 	public byte getPriority() {
 		return priority;
 	}
@@ -86,6 +149,7 @@ public class Child {
 		this.priority = priority;
 	}
 
+	@ManyToOne
 	public Group getGroup() {
 		return group;
 	}
@@ -93,4 +157,34 @@ public class Child {
 	public void setGroup(Group group) {
 		this.group = group;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Child other = (Child) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+	
+	
 }

@@ -20,7 +20,8 @@ import javax.persistence.Table;
  * @author domagoj
  *
  */
-
+@Entity
+@Table(name="workplaces")
 public class Workplace {
 
 	/**
@@ -29,14 +30,22 @@ public class Workplace {
 	private long id;
 	
 	/**
-	 * Adress of the work place.
+	 * Adsress of the work place.
 	 */
-	private String adress;
+	private String address;
+	
+	/**
+	 * Town of the workplace.
+	 */
+	private String town;
 	
 	/**
 	 * List of groups associated with the workplace.
 	 */
 	private List<Group> groups = new ArrayList<>();
+	
+	public Workplace() {
+	}
 
 	@Id @GeneratedValue
 	public long getId() {
@@ -48,12 +57,21 @@ public class Workplace {
 	}
 
 	@Column(length=200, nullable=false)
-	public String getAdress() {
-		return adress;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setAdress(String adress) {
-		this.adress = adress;
+	public void setAddress(String adress) {
+		this.address = adress;
+	}
+	
+	@Column(length=50, nullable=false)
+	public String getTown() {
+		return town;
+	}
+
+	public void setTown(String town) {
+		this.town = town;
 	}
 
 	@OneToMany(mappedBy="workplace", fetch=FetchType.LAZY, cascade=CascadeType.PERSIST, orphanRemoval=true)
@@ -64,6 +82,33 @@ public class Workplace {
 	public void setGroups(List<Group> groups) {
 		this.groups = groups;
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Workplace other = (Workplace) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
 	
 }

@@ -2,6 +2,22 @@ package hr.fer.zemris.opp.model;
 
 import java.util.List;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+/**
+ * The parent of the children in the system.
+ * 
+ * @author domagoj
+ *
+ */
+@Entity
+@Table(name="parents")
 public class Parent {
 
 	private long id;
@@ -19,7 +35,11 @@ public class Parent {
 	private int socialStatus;
 	
 	private List<Child> children;
+	
+	public Parent() {
+	}
 
+	@Id @GeneratedValue
 	public long getId() {
 		return id;
 	}
@@ -28,6 +48,7 @@ public class Parent {
 		this.id = id;
 	}
 
+	@Column(length=40, nullable=false)
 	public String getFirstName() {
 		return firstName;
 	}
@@ -36,6 +57,7 @@ public class Parent {
 		this.firstName = firstName;
 	}
 
+	@Column(length=40, nullable=false)
 	public String getLastName() {
 		return lastName;
 	}
@@ -44,6 +66,7 @@ public class Parent {
 		this.lastName = lastName;
 	}
 
+	@Column(length=40, nullable=false)
 	public String getOib() {
 		return oib;
 	}
@@ -52,6 +75,7 @@ public class Parent {
 		this.oib = oib;
 	}
 
+	@Column(length=40, nullable=false)
 	public String getPhone() {
 		return phone;
 	}
@@ -60,6 +84,7 @@ public class Parent {
 		this.phone = phone;
 	}
 
+	@Basic
 	public int getIncome() {
 		return income;
 	}
@@ -68,6 +93,7 @@ public class Parent {
 		this.income = income;
 	}
 
+	@Basic
 	public int getSocialStatus() {
 		return socialStatus;
 	}
@@ -76,6 +102,7 @@ public class Parent {
 		this.socialStatus = socialStatus;
 	}
 
+	@OneToMany(mappedBy="parent")
 	public List<Child> getChildren() {
 		return children;
 	}
@@ -83,6 +110,33 @@ public class Parent {
 	public void setChildren(List<Child> children) {
 		this.children = children;
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Parent other = (Parent) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
 	
 }

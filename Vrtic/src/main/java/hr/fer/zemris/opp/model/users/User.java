@@ -1,17 +1,27 @@
 package hr.fer.zemris.opp.model.users;
 
+import java.util.List;
+
 import hr.fer.zemris.opp.model.Group;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * Defines a user. The user has a unique id
- * and nick. First and last name are saved. The password
- * is hashed for secury reasons.
+ * Defines a user of the web application that can login into the
+ * system and do adequate functions. The user has a unique id
+ * and nick. First and last name show the users identity. The password
+ * is hashed for security reasons.
+ * 
+ * The user has three types: Administrator, Educator and Accountant.
+ * 
+ * The types are defined by strings as follows: "adm", "edu" and "acc".
+ * The type of each user is saved internally and can be retrieved from
+ * {@link #getType()}.
  * 
  * @author Domagoj Boros
  *
@@ -56,6 +66,15 @@ public class User {
 	 * Possible user types.
 	 */
 	private final String[] types = new String[] { "adm", "edu", "acc" };
+	
+	/**
+	 * The group that this user works in.
+	 */
+	private Group group = null;
+	
+	public User() {
+	}
+	
 	/**
 	 * @return the id
 	 */
@@ -139,6 +158,23 @@ public class User {
 		return type;
 	}
 	
+	@ManyToOne
+	public Group getGroup() {
+		return group;
+	}
+	
+	/**
+	 * Set the working group of this user.
+	 * 
+	 * If set too null, that means the user is not working
+	 * in a group.
+	 * 
+	 * @param group
+	 */
+	public void setGroup(Group group) {
+		this.group = group;
+	}
+	
 	/**
 	 * Set the user type.
 	 * 
@@ -202,7 +238,5 @@ public class User {
 		}
 		return true;
 	}
-	
-	
 	
 }

@@ -43,6 +43,21 @@ public class JPADAOImpl implements DAO {
 	}
 	
 	@Override
+	public User getUser(long id) throws DAOException {
+		EntityManager em = JPAEMProvider.getEntityManager();
+		User user = null;
+		try {
+			user = (User)em.createQuery("SELECT u FROM User u WHERE u.id = :ui")
+					.setParameter("ui", id)
+					.getSingleResult();
+		} catch(NoResultException e) {
+			return null;
+		}
+		
+		return user;
+	}
+	
+	@Override
 	public boolean userExists(String nick) throws DAOException {
 		try {
 			JPAEMProvider.getEntityManager().createQuery("SELECT u FROM User u WHERE u.nick = :un")
@@ -89,14 +104,30 @@ public class JPADAOImpl implements DAO {
 
 	@Override
 	public Workplace getWorkplace(long id) throws DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		EntityManager em = JPAEMProvider.getEntityManager();
+		Workplace w = null;
+		try {
+			w = (Workplace)em.createQuery("SELECT w FROM Workplace w WHERE w.id = :ui")
+					.setParameter("ui", id)
+					.getSingleResult();
+		} catch(NoResultException e) {
+			return null;
+		}
+		
+		return w;
+	}
+	
+	@Override
+	public List<Workplace> getAllWorkplaces() throws DAOException {
+		EntityManager em = JPAEMProvider.getEntityManager();
+		@SuppressWarnings("unchecked")
+		List<Workplace> workplaces = (List<Workplace>)em.createQuery("SELECT w FROM Workplace w").getResultList();
+		return workplaces;
 	}
 
 	@Override
 	public void insertWorplace(Workplace workplace) throws DAOException {
-		// TODO Auto-generated method stub
-		
+		JPAEMProvider.getEntityManager().persist(workplace);
 	}
 
 	@Override
@@ -110,5 +141,10 @@ public class JPADAOImpl implements DAO {
 	public List<User> getUsersForGroup(Group group) throws DAOException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public void insertGroup(Group g) {
+		JPAEMProvider.getEntityManager().persist(g);
 	}
 }
