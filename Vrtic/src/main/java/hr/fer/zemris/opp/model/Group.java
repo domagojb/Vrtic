@@ -142,6 +142,23 @@ public class Group {
 	public void setEducators(List<User> educators) {
 		this.educators = educators;
 	}
+	
+	/**
+	 * Tells if there is room in the group, i.e. the capacity hasn't been reached.
+	 * 
+	 * @return <code>true</code> if there is room for a child, else <code>false</code>
+	 */
+	public boolean hasRoom() {
+		if (children == null) {
+			return true;
+		}
+		
+		if (children.size() == capacity) {
+			return false;
+		}
+		
+		return true;
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
