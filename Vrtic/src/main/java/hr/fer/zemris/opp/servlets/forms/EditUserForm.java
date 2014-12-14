@@ -1,28 +1,48 @@
 package hr.fer.zemris.opp.servlets.forms;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import hr.fer.zemris.opp.dao.DAOProvider;
 import hr.fer.zemris.opp.model.users.User;
 import hr.fer.zemris.opp.password.PasswordHasher;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.management.BadAttributeValueExpException;
+import javax.management.InvalidAttributeValueException;
+import javax.servlet.http.HttpServletRequest;
+
+import org.hibernate.type.descriptor.sql.NVarcharTypeDescriptor;
+
 /**
- * Represents the form (JavaBean) for a {@link User}.
+ * Form used for editing user info.
+ * 
+ * @author domagoj
+ *
  */
-public class AddUserForm {
+public class EditUserForm {
 
 	/**
 	 * The user information that has to be given in the form.
 	 * Default set to empty so you get an empty form when creating a new one.
 	 */
+	private Long id;
 	private String firstName = "";
 	private String lastName = "";
 	private String nick = "";
 	private String password = "";
 	private String type = "";
+	
+	/**
+	 * Options that tell whether the information or the password are attempted to
+	 * be changed.
+	 */
+	public enum Option {
+		INFO,
+		PASSWORD
+	}
+	
+	private Option option = Option.INFO;
 	
 	// Mapa<property, error message>
 	/**
@@ -59,14 +79,22 @@ public class AddUserForm {
 	}
 	
 	/**
-	 * Fills up the form from the request.
+	 * Fills up the form from the request for the given {@link Option}.
+	 * 
 	 */
-	public void fillFromHttpRequest(HttpServletRequest req) {
-		this.firstName = req.getParameter("firstname");
-		this.lastName = req.getParameter("lastname");
-		this.nick = req.getParameter("nick");
+	public void fillFromHttpRequest(HttpServletRequest req, Option o) {
+		this.option = o;
+		
+		if (option == Option.INFO) {
+			this.id = Long.valueOf(req.getParameter("id"));
+			this.firstName = req.getParameter("firstname");
+			this.lastName = req.getParameter("lastname");
+			this.nick = req.getParameter("nick");
+			this.type = req.getParameter("userType");
+			return;
+		} 
+		
 		this.password = req.getParameter("password");
-		this.type = req.getParameter("userType");
 	}
 	
 	/**
@@ -109,11 +137,26 @@ public class AddUserForm {
 	public void validate() {
 		errors.clear();
 		
+		if (option == Option.INFO) {
+			validateInfo();
+		} else {
+			validatePassword();
+		}
+		
+	}
+
+	/**
+	 * Validates the given information.
+	 */
+	private void validateInfo() {
 		if(nick.isEmpty()) {
 			errors.put("nick", "Koriscnicko ime je obavezno");
 		} else {
-			if(DAOProvider.getDAO().userExists(nick)) {
-				errors.put("nick", "Korisnicko ime vec postoji");
+			List<User> users = DAOProvider.getDAO().getAllUsers();
+			for (User u : users) {
+				if (u.getNick().equals(nick) && u.getId() != id) {
+					errors.put("nick", "Korisnicko ime vec postoji");
+				}
 			}
 		}
 		
@@ -124,9 +167,14 @@ public class AddUserForm {
 		if(lastName.isEmpty()) {
 			errors.put("lastname", "Prezime je obavezno");
 		}
-		
+	}
+
+	/**
+	 * Validates the given password.
+	 */
+	private void validatePassword() {
 		if(password.isEmpty()) {
-			errors.put("password", "Lozinka je obavezna");
+			errors.put("password", "Lozinka ne može biti prazna");
 		}
 	}
 
@@ -201,5 +249,4 @@ public class AddUserForm {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
 }
