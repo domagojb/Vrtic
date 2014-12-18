@@ -144,6 +144,19 @@ public class Group {
 	}
 	
 	/**
+	 * Returns the current number of children in the group.
+	 * 
+	 * @return number of children in the group
+	 */
+	public int count() {
+		if (children == null) {
+			return 0;
+		}
+		
+		return children.size();
+	}
+	
+	/**
 	 * Tells if there is room in the group, i.e. the capacity hasn't been reached.
 	 * 
 	 * @return <code>true</code> if there is room for a child, else <code>false</code>

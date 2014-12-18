@@ -4,6 +4,7 @@ import java.util.List;
 
 import hr.fer.zemris.opp.model.Child;
 import hr.fer.zemris.opp.model.Group;
+import hr.fer.zemris.opp.model.Parent;
 import hr.fer.zemris.opp.model.Workplace;
 import hr.fer.zemris.opp.model.users.User;
 
@@ -91,6 +92,15 @@ public interface DAO {
 	public List<Child> getChildrenInGroup(Group group) throws DAOException;
 	
 	/**
+	 * Returns all the parents in the database or <code>null</code> if
+	 * there are no parents.
+	 * 
+	 * @return List of all the parents in the database or <code>null</code> if there are none
+	 * @throws DAOException on error retrieving errors
+	 */
+	public List<Parent> getAllParents() throws DAOException;
+	
+	/**
 	 * Returns {@link Workplace} with given <code>id</code>.
 	 * 
 	 * @param id of the workplace to fetch
@@ -114,6 +124,25 @@ public interface DAO {
 	 * @throws DAOException on error inserting
 	 */
 	public void insertWorplace(Workplace workplace) throws DAOException;
+	
+	/**
+	 * Returns all the groups in the database or <code>null</code> if there are no
+	 * groups.
+	 * 
+	 * @return List of all groups or <code>null</code> if there are no groups
+	 * @throws DAOException on error retrieving groups
+	 */
+	public List<Group> getAllGroups() throws DAOException;
+	
+	/**
+	 * Returns the {@link Group} with given <code>id</code> or <code>null</code>
+	 * if there is no such group.
+	 * 
+	 * @param id of group to fetch
+	 * @return {@link Group} with given id or <code>null</code> if there is none
+	 * @throws DAOException on error retrieving group
+	 */
+	public Group getGroup(long id) throws DAOException;
 	
 	public List<Group> getGroupsInWorkplace(Workplace workplace) throws DAOException;
 	

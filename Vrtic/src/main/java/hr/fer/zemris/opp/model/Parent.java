@@ -30,6 +30,8 @@ public class Parent {
 	
 	private String phone;
 	
+	private String address;
+	
 	private int income;
 	
 	private int socialStatus;
@@ -73,6 +75,21 @@ public class Parent {
 
 	public void setOib(String oib) {
 		this.oib = oib;
+	}	
+	
+	/**
+	 * @return the address
+	 */
+	@Column(length=40, nullable=false)
+	public String getAddress() {
+		return address;
+	}
+
+	/**
+	 * @param address the address to set
+	 */
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	@Column(length=40, nullable=false)

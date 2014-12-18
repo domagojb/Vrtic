@@ -9,6 +9,7 @@ import hr.fer.zemris.opp.dao.DAO;
 import hr.fer.zemris.opp.dao.DAOException;
 import hr.fer.zemris.opp.model.Child;
 import hr.fer.zemris.opp.model.Group;
+import hr.fer.zemris.opp.model.Parent;
 import hr.fer.zemris.opp.model.Workplace;
 import hr.fer.zemris.opp.model.users.User;
 
@@ -101,6 +102,14 @@ public class JPADAOImpl implements DAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public List<Parent> getAllParents() throws DAOException {
+		EntityManager em = JPAEMProvider.getEntityManager();
+		@SuppressWarnings("unchecked")
+		List<Parent> parents = (List<Parent>)em.createQuery("SELECT p FROM Parent p").getResultList();
+		return parents;
+	}
 
 	@Override
 	public Workplace getWorkplace(long id) throws DAOException {
@@ -128,6 +137,29 @@ public class JPADAOImpl implements DAO {
 	@Override
 	public void insertWorplace(Workplace workplace) throws DAOException {
 		JPAEMProvider.getEntityManager().persist(workplace);
+	}
+	
+	@Override
+	public List<Group> getAllGroups() throws DAOException {
+		EntityManager em = JPAEMProvider.getEntityManager();
+		@SuppressWarnings("unchecked")
+		List<Group> groups = (List<Group>)em.createQuery("SELECT g FROM Group g").getResultList();
+		return groups;
+	}
+	
+	@Override
+	public Group getGroup(long id) throws DAOException {
+		EntityManager em = JPAEMProvider.getEntityManager();
+		Group g = null;
+		try {
+			g = (Group)em.createQuery("SELECT g FROM Group g WHERE g.id = :gi")
+					.setParameter("gi", id)
+					.getSingleResult();
+		} catch(NoResultException e) {
+			return null;
+		}
+		
+		return g;
 	}
 
 	@Override

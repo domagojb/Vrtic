@@ -1,6 +1,16 @@
 package hr.fer.zemris.opp.servlets.userfunctions;
 
+import hr.fer.zemris.opp.dao.DAOProvider;
+import hr.fer.zemris.opp.model.Group;
+import hr.fer.zemris.opp.model.Parent;
+import hr.fer.zemris.opp.model.Workplace;
+import hr.fer.zemris.opp.model.users.User;
+import hr.fer.zemris.opp.servlets.forms.AddChildByAdminForm;
+
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -35,13 +45,40 @@ public class AddChild extends HttpServlet {
 			return;
 		}
 		
+		List<Parent> parents = DAOProvider.getDAO().getAllParents();
+		List<Group> groups = DAOProvider.getDAO().getAllGroups();
+		
+		req.setAttribute("parents", parents);
+		req.setAttribute("groups", groups);
+		req.setAttribute("form", new AddChildByAdminForm());
+		
 		req.getRequestDispatcher("/WEB-INF/pages/addchild.jsp").forward(req, resp);
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.doPost(req, resp);
+		
+		AddChildByAdminForm form = new AddChildByAdminForm();
+		form.fillFromHttpRequest(req);
+		
+		form.validate();
+		
+		
+		if(form.hasErrors()) {
+			req.setAttribute("form", form);
+			
+			List<Parent> parents = DAOProvider.getDAO().getAllParents();
+			List<Group> groups = DAOProvider.getDAO().getAllGroups();
+			
+			req.setAttribute("parents", parents);
+			req.setAttribute("groups", groups);
+			
+			req.getRequestDispatcher("/WEB-INF/pages/addchild.jsp").forward(req, resp);
+			return;
+		}
+		
+		req.setAttribute("userErrorMessage", form.getBday());
+		req.getRequestDispatcher("/WEB-INF/pages/Error.jsp").forward(req, resp);
 	}
 }
