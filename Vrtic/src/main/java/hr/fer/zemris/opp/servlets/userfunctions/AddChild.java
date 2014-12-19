@@ -1,6 +1,7 @@
 package hr.fer.zemris.opp.servlets.userfunctions;
 
 import hr.fer.zemris.opp.dao.DAOProvider;
+import hr.fer.zemris.opp.model.Child;
 import hr.fer.zemris.opp.model.Group;
 import hr.fer.zemris.opp.model.Parent;
 import hr.fer.zemris.opp.model.Workplace;
@@ -78,7 +79,16 @@ public class AddChild extends HttpServlet {
 			return;
 		}
 		
-		req.setAttribute("userErrorMessage", form.getBday());
-		req.getRequestDispatcher("/WEB-INF/pages/Error.jsp").forward(req, resp);
+		Parent p = form.getParentFromForm();
+		Child c = form.getChildFromForm();
+		
+		if (!form.isExistingParent()) {
+			DAOProvider.getDAO().insertParent(p);
+		}
+		
+		p.addChild(c);
+		DAOProvider.getDAO().insertChild(c);
+		
+		resp.sendRedirect(req.getServletContext().getContextPath() + "/userpanel");
 	}
 }

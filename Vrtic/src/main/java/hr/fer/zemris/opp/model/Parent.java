@@ -1,5 +1,6 @@
 package hr.fer.zemris.opp.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -126,6 +127,18 @@ public class Parent {
 
 	public void setChildren(List<Child> children) {
 		this.children = children;
+	}
+	
+	/**
+	 * Add a child to the parent.
+	 * @param c child to add
+	 */
+	public void addChild(Child c) {
+		if (children == null) {
+			children = new ArrayList<Child>();
+		}
+		
+		children.add(c);
 	}
 
 	/* (non-Javadoc)

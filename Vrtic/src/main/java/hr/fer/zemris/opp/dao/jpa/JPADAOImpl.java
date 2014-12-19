@@ -93,14 +93,33 @@ public class JPADAOImpl implements DAO {
 
 	@Override
 	public void insertChild(Child child) throws DAOException {
-		// TODO Auto-generated method stub
-		
+		JPAEMProvider.getEntityManager().persist(child);
 	}
 
 	@Override
 	public List<Child> getChildrenInGroup(Group group) throws DAOException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public void insertParent(Parent parent) throws DAOException {
+		JPAEMProvider.getEntityManager().persist(parent);
+	}
+	
+	@Override
+	public Parent getParent(long id) throws DAOException {
+		EntityManager em = JPAEMProvider.getEntityManager();
+		Parent p = null;
+		try {
+			p = (Parent)em.createQuery("SELECT p FROM Parent p WHERE p.id = :pi")
+					.setParameter("pi", id)
+					.getSingleResult();
+		} catch(NoResultException e) {
+			return null;
+		}
+		
+		return p;
 	}
 	
 	@Override

@@ -83,13 +83,32 @@ public interface DAO {
 	public Child getChild(long id) throws DAOException;
 	
 	/**
-	 * <b>NOT IMPLEMENTED</b>
-	 * @param child
-	 * @throws DAOException
+	 * Persists given child into database.
+	 * 
+	 * @param child to persist
+	 * @throws DAOException on error persisting
 	 */
 	public void insertChild(Child child) throws DAOException;
 	
 	public List<Child> getChildrenInGroup(Group group) throws DAOException;
+	
+	/**
+	 * Inserts the given parent into the database.
+	 * 
+	 * @param parent to persist
+	 * @throws DAOException on error persisting
+	 */
+	public void insertParent(Parent parent) throws DAOException;
+	
+	/**
+	 * Returns the parent with the given <code>id</code> or <code>null</code> if there is
+	 * no such parent.
+	 * 
+	 * @param id of the parent to fetch
+	 * @return {@link Parent} or <code>null</code>
+	 * @throws DAOException on error fetching parent
+	 */
+	public Parent getParent(long id) throws DAOException;
 	
 	/**
 	 * Returns all the parents in the database or <code>null</code> if

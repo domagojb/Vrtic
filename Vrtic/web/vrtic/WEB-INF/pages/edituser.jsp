@@ -5,10 +5,12 @@
     <title>Vrtic buducnosti</title>
   </head>
   <body>
-    <p>Dodaj novog korisnika:</p>
+  	<c:choose>
+      <c:when  test="${option == 'Izmjeni podatke'}">
+        <form method="post" action="${pageContext.request.contextPath}/userpanel/edituser/editor">
+        <input type="hidden" name="id" value="${id}" />
     
-    <form method="post">
-    <table>
+    	<table>
 		 <tr><td>Ime</td><td> <input type="text" name="firstname" value='<c:out value="${form.firstName}" />' size ="40">
 		     <c:if test="${form.hasError('firstname')}">
 		         <div class="greska"><c:out value="${form.getError('firstname')}" /></div>
@@ -27,21 +29,40 @@
 		     </c:if></td>
 		 </tr>
 		     
-		 <tr><td>Lozinka</td><td> <input type="password" name="password" value='' size ="40">
-		     <c:if test="${form.hasError('password')}">
-		         <div class="greska"><c:out value="${form.getError('password')}" /></div>
-		     </c:if></td>
-		 </tr>
 		 <tr><td>Tip računa</td><td><input type="radio" name="userType" value="edu" checked>Odgajatelj<br>
 									<input type="radio" name="userType" value="acc">Računovođa</td>
 		 </tr>
 		
 		 <tr><td></td><td>
-		     <input type="submit" name="metoda"	value="Primjeni">
+		     <input type="submit" name="method"	value="Izmjeni podatke">
 		     </td>
 		 </tr>
-	</table>
-    </form>
+	    </table>
+        </form>
+      </c:when>
+      <c:otherwise>
+       <form method="post" action="${pageContext.request.contextPath}/userpanel/edituser/editor">
+       <input type="hidden" name="id" value="${id}" />
+       
+       
+       <table>
+		     
+		 <tr><td>Lozinka</td><td> <input type="password" name="password" value='' size ="40">
+		     <c:if test="${form.hasError('password')}">
+		         <div class="greska"><c:out value="${form.getError('password')}" /></div>
+		     </c:if></td>
+		 </tr>
+		
+		
+		 <tr><td></td><td>
+		     <input type="submit" name="method"	value="Izmjeni lozinku">
+		     </td>
+		 </tr>
+	  </table>
+      </form>
+      </c:otherwise>
+    </c:choose>    
+    
         
     <a href="${pageContext.servletContext.contextPath}/userpanel">Vrati se na izbornik</a>
   </body>

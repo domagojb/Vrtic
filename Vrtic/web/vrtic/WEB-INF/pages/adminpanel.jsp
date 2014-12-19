@@ -8,8 +8,10 @@
   	<ul>
   	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/adduser">Dodaj novog korisnika</a></li>
   	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/removeuser">Obrisi korisnika</a></li>
+  	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/edituser">Izmjeni korisnika</a></li>
   	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/addworkplace">Dodaj objekt</a></li>
   	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/addgroup">Dodaj grupu</a></li>  	
+  	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/addchild">Upiši dijete</a></li>  	
   	  <br>  
   	  <a href="${pageContext.servletContext.contextPath}/">Vrati se na homepage</a>
   	</ul>
