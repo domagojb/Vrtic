@@ -16,7 +16,7 @@
 			<!-- ============================== -->
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
 			<property name="hibernate.archive.autodetection" value="class" />
-			<property name="hibernate.hbm2ddl.auto" value="create-drop" /> <!-- mogućnosti: create, create-drop, update -->
+			<property name="hibernate.hbm2ddl.auto" value="update" /> <!-- mogućnosti: create, create-drop, update -->
 			<property name="hibernate.format_sql" value="true" /> <!-- kasnije na false -->
 			<property name="hibernate.show_sql" value="true" /> <!-- kasnije na false -->
             

@@ -92,6 +92,12 @@ public class JPADAOImpl implements DAO {
 	}
 
 	@Override
+	public void removeChild(long id) throws DAOException {
+		EntityManager em = JPAEMProvider.getEntityManager();
+		em.createQuery("DELETE FROM Child c WHERE c.id = :ci").setParameter("ci", id).executeUpdate();
+	}
+	
+	@Override
 	public void insertChild(Child child) throws DAOException {
 		JPAEMProvider.getEntityManager().persist(child);
 	}
@@ -100,6 +106,17 @@ public class JPADAOImpl implements DAO {
 	public List<Child> getChildrenInGroup(Group group) throws DAOException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public List<Child> getChildrenInGroup(long id) throws DAOException {
+		EntityManager em = JPAEMProvider.getEntityManager();
+		@SuppressWarnings("unchecked")
+		// TODO : mozda ne dela
+		List<Child> children = (List<Child>)em.createQuery("SELECT c FROM Child c WHERE c.group.id = :gi")
+				.setParameter("gi", id)
+				.getResultList();
+		return children;
 	}
 	
 	@Override

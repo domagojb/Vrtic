@@ -11,9 +11,10 @@
   	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/edituser">Izmjeni korisnika</a></li>
   	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/addworkplace">Dodaj objekt</a></li>
   	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/addgroup">Dodaj grupu</a></li>  	
-  	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/addchild">Upiši dijete</a></li>  	
+  	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/addchild">Upiši dijete</a></li>  
+  	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/removechild">Ispiši dijete</a></li> 	
   	  <br>  
-  	  <a href="${pageContext.servletContext.contextPath}/">Vrati se na homepage</a>
+  	  <a href="${pageContext.servletContext.contextPath}/">Vrati se na naslovnicu</a>
   	</ul>
   </body>
 </html>

@@ -83,6 +83,15 @@ public interface DAO {
 	public Child getChild(long id) throws DAOException;
 	
 	/**
+	 * Removes the child with given <code>id</code> from the
+	 * database.
+	 * 
+	 * @param id of the child to remove
+	 * @throws DAOException on error removing child
+	 */
+	public void removeChild(long id) throws DAOException;
+	
+	/**
 	 * Persists given child into database.
 	 * 
 	 * @param child to persist
@@ -91,6 +100,17 @@ public interface DAO {
 	public void insertChild(Child child) throws DAOException;
 	
 	public List<Child> getChildrenInGroup(Group group) throws DAOException;
+	
+	/**
+	 * Returns a list of children in the group with the given <code>id</code>.
+	 * 
+	 * If there are no children returns <code>null</code>.
+	 * 
+	 * @param id the id of the group from which to get the list of children
+	 * @return {@link List} of children or <code>null</code> if there are none
+	 * @throws DAOException on error retrieving children
+	 */
+	public List<Child> getChildrenInGroup(long id) throws DAOException;
 	
 	/**
 	 * Inserts the given parent into the database.
