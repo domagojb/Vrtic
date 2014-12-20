@@ -64,7 +64,6 @@ public class EditUser extends HttpServlet {
 				return;
 			} 
 			
-			
 			req.setAttribute("userErrorMessage", "Interna pogreška -101");
 			req.getRequestDispatcher("/WEB-INF/pages/Error.jsp").forward(req, resp);
 			return;

@@ -40,6 +40,8 @@
 	    </table>
         </form>
       </c:when>
+      <c:when test="${option == 'Izmjeni grupu'}">
+      </c:when>
       <c:otherwise>
        <form method="post" action="${pageContext.request.contextPath}/userpanel/edituser/editor">
        <input type="hidden" name="id" value="${id}" />
