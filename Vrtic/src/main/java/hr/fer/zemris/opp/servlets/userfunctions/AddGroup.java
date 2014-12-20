@@ -92,6 +92,17 @@ public class AddGroup extends HttpServlet {
 		
 		Group g = form.getGroupFromForm();
 		DAOProvider.getDAO().insertGroup(g);
+		
+		// get the id of the educators selected for the group
+		String[] sUIDs = req.getParameterValues("educators");
+		
+		// add the groups to the educators
+		for (String sUID : sUIDs) {
+			Long uid = Long.valueOf(sUID);
+			User u = DAOProvider.getDAO().getUser(uid);
+			u.setGroup(g);
+		}
+		
 		resp.sendRedirect(req.getServletContext().getContextPath() + "/userpanel");
 	}
 	
