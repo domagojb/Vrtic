@@ -6,6 +6,7 @@ import hr.fer.zemris.opp.model.Child;
 import hr.fer.zemris.opp.model.Group;
 import hr.fer.zemris.opp.model.Parent;
 import hr.fer.zemris.opp.model.Workplace;
+import hr.fer.zemris.opp.model.records.ChildRecord;
 import hr.fer.zemris.opp.model.users.User;
 
 /**
@@ -75,10 +76,12 @@ public interface DAO {
 	public void removeUser(String nick) throws DAOException;
 	
 	/**
-	 * <b>NOT IMPLEMENTED</b>
-	 * @param id
-	 * @return
-	 * @throws DAOException
+	 * Retrieves the {@link Child} with the given <code>id</code> 
+	 * from the database.
+	 * 
+	 * @param id of the child to fetch
+	 * @return {@link Child} or <code>null</code> if it doesn't exist
+	 * @throws DAOException on error fetching child
 	 */
 	public Child getChild(long id) throws DAOException;
 	
@@ -193,4 +196,11 @@ public interface DAO {
 	 * @param g group to insert
 	 */
 	public void insertGroup(Group g);
+	
+	/**
+	 * Inserts record into database.
+	 * 
+	 * @param r record to insert
+	 */
+	public void insertRecord(ChildRecord r);
 }

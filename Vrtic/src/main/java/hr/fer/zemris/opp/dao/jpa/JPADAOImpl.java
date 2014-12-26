@@ -11,6 +11,7 @@ import hr.fer.zemris.opp.model.Child;
 import hr.fer.zemris.opp.model.Group;
 import hr.fer.zemris.opp.model.Parent;
 import hr.fer.zemris.opp.model.Workplace;
+import hr.fer.zemris.opp.model.records.ChildRecord;
 import hr.fer.zemris.opp.model.users.User;
 
 /**
@@ -87,8 +88,17 @@ public class JPADAOImpl implements DAO {
 
 	@Override
 	public Child getChild(long id) throws DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		EntityManager em = JPAEMProvider.getEntityManager();
+		Child c = null;
+		try {
+			c = (Child)em.createQuery("SELECT c FROM Child c WHERE c.id = :ci")
+					.setParameter("ci", id)
+					.getSingleResult();
+		} catch(NoResultException e) {
+			return null;
+		}
+		
+		return c;
 	}
 
 	@Override
@@ -214,5 +224,10 @@ public class JPADAOImpl implements DAO {
 	@Override
 	public void insertGroup(Group g) {
 		JPAEMProvider.getEntityManager().persist(g);
+	}
+	
+	@Override
+	public void insertRecord(ChildRecord r) {
+		JPAEMProvider.getEntityManager().persist(r);
 	}
 }

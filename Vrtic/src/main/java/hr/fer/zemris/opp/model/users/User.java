@@ -1,8 +1,15 @@
 package hr.fer.zemris.opp.model.users;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import hr.fer.zemris.opp.dao.DAOProvider;
+import hr.fer.zemris.opp.model.Child;
 import hr.fer.zemris.opp.model.Group;
+import hr.fer.zemris.opp.model.records.ChildRecord;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Defines a user of the web application that can login into the
@@ -173,6 +181,63 @@ public class User {
 	 */
 	public void setGroup(Group group) {
 		this.group = group;
+	}
+	
+	/**
+	 * Fills the attendance {@link ChildRecord} for his group.
+	 * 
+	 * @param req inherited from the servlet the request was gotten from
+	 * @throws FormException when there is an error in the form, error message contains error code
+	 */
+	public void FillAttendanceRecord(HttpServletRequest req) throws FormException {
+		String sGID = req.getParameter("gid");
+		String[] sCIDs = req.getParameterValues("children");
+		String sDate = req.getParameter("date");
+		Date date = null;
+		try {
+			date = new SimpleDateFormat("yyyy-MM-dd").parse(sDate);
+		} catch (ParseException e1) {
+			throw new FormException("Interna pogreska -557");
+		}
+		
+		List<Child> children = new ArrayList<Child>();
+		
+		if (sCIDs != null) {
+			for (String sCID : sCIDs) {
+				
+				long cid;
+				try {
+					cid = Long.valueOf(sCID);
+					System.out.println("CID: " + cid);
+				} catch (NumberFormatException e) {
+					throw new FormException("Interna pogreska -558");
+				}
+				
+				Child c = DAOProvider.getDAO().getChild(cid);
+				children.add(c);
+
+			}
+		} 
+		
+		Long gid = null;
+		try {
+			gid = Long.valueOf(sGID);
+		} catch (NumberFormatException e) {
+			throw new FormException("Interna pogreska -559");
+		}
+		
+		Group g = DAOProvider.getDAO().getGroup(gid);
+		
+		ChildRecord record = new ChildRecord();
+		record.setGroup(g);
+		record.setPresentChildren(children);
+		record.setDate(date);
+		
+		for(Child c : children) {
+			c.addRecord(record);
+		}
+		
+		DAOProvider.getDAO().insertRecord(record);
 	}
 	
 	/**

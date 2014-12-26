@@ -1,5 +1,6 @@
 package hr.fer.zemris.opp.model;
 
+import hr.fer.zemris.opp.model.records.ChildRecord;
 import hr.fer.zemris.opp.model.users.User;
 
 import java.util.List;
@@ -59,6 +60,11 @@ public class Group {
 	 * List of educators that work in the group.
 	 */
 	private List<User> educators;
+	
+	/**
+	 * All of the attendance records for this group.
+	 */
+	private List<ChildRecord> records;
 	
 	public Group() {
 	}
@@ -143,6 +149,21 @@ public class Group {
 		this.educators = educators;
 	}
 	
+	/**
+	 * @return the records
+	 */
+	@OneToMany(mappedBy="group")
+	public List<ChildRecord> getRecords() {
+		return records;
+	}
+
+	/**
+	 * @param records the records to set
+	 */
+	public void setRecords(List<ChildRecord> records) {
+		this.records = records;
+	}
+
 	/**
 	 * Returns the current number of children in the group.
 	 * 

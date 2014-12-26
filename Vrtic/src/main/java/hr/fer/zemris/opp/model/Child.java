@@ -1,6 +1,10 @@
 package hr.fer.zemris.opp.model;
 
+import hr.fer.zemris.opp.model.records.ChildRecord;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -8,7 +12,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -65,6 +71,11 @@ public class Child {
 	 * Group that this child belongs too.
 	 */
 	private Group group = null;
+	
+	/**
+	 * All of the attendance records for this child.
+	 */
+	private List<ChildRecord> records = new ArrayList<ChildRecord>();
 	
 	public Child() {
 	}
@@ -156,6 +167,34 @@ public class Child {
 
 	public void setGroup(Group group) {
 		this.group = group;
+	}
+
+	/**
+	 * @return the records
+	 */
+	@ManyToMany(mappedBy="presentChildren")
+	public List<ChildRecord> getRecords() {
+		return records;
+	}
+
+	/**
+	 * @param records the records to set
+	 */
+	public void setRecords(List<ChildRecord> records) {
+		this.records = records;
+	}
+	
+	/**
+	 * Add a record to the {@link ChildRecord} list.
+	 * 
+	 * @param record to add
+	 */
+	public void addRecord(ChildRecord record) {
+		if (record == null) {
+			records = new ArrayList<ChildRecord>();
+		}
+		
+		records.add(record);
 	}
 
 	/* (non-Javadoc)

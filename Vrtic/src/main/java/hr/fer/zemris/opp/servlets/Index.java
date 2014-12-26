@@ -73,6 +73,7 @@ public class Index extends HttpServlet{
 			return;
 		}
 		
+		req.getSession().setAttribute("current.user", user);
 		req.getSession().setAttribute("current.user.id", user.getId());
 		req.getSession().setAttribute("current.user.fn", user.getFirstName());
 		req.getSession().setAttribute("current.user.ln", user.getLastName());
