@@ -10,12 +10,15 @@ import hr.fer.zemris.opp.dao.DAOProvider;
 import hr.fer.zemris.opp.model.Child;
 import hr.fer.zemris.opp.model.Group;
 import hr.fer.zemris.opp.model.records.ChildRecord;
+import hr.fer.zemris.opp.model.records.EducatorActivity;
+import hr.fer.zemris.opp.servlets.forms.EnterEducatorActivityForm;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.servlet.http.HttpServletRequest;
 
@@ -79,6 +82,11 @@ public class User {
 	 * The group that this user works in.
 	 */
 	private Group group = null;
+	
+	/**
+	 * Activity list of the user. Used by educators and admins.
+	 */
+	private List<EducatorActivity> activityLog;
 	
 	public User() {
 	}
@@ -184,6 +192,21 @@ public class User {
 	}
 	
 	/**
+	 * @return the activityLog
+	 */
+	@OneToMany(mappedBy="educator")
+	public List<EducatorActivity> getActivityLog() {
+		return activityLog;
+	}
+
+	/**
+	 * @param activityLog the activityLog to set
+	 */
+	public void setActivityLog(List<EducatorActivity> activityLog) {
+		this.activityLog = activityLog;
+	}
+
+	/**
 	 * Fills the attendance {@link ChildRecord} for his group.
 	 * 
 	 * @param req inherited from the servlet the request was gotten from
@@ -239,6 +262,37 @@ public class User {
 		
 		DAOProvider.getDAO().insertRecord(record);
 	}
+	
+	/**
+	 * Fills an {@link EducatorActivity} from the form in the {@link HttpServletRequest}.
+	 * The user the form is filled for written in the form. This user only extracts and saves
+	 * the log.
+	 * 
+	 * The form is validated by this method. 
+	 * 
+	 * The returned form may contain errors. If it contains validation errors 
+	 * the form will be returned with the errors map set. If there are internal
+	 * errors {@link FormException} will be thrown.
+	 * 
+	 * If the form is correct the log will be saved.
+	 * 
+	 * @param req inherited from the request that the form came from
+	 * @return the filled form, with it's errors
+	 * @throws FormException on internal errors in the form
+	 */
+	public EnterEducatorActivityForm FillActivityLog(HttpServletRequest req) throws FormException {
+		EnterEducatorActivityForm form = new EnterEducatorActivityForm();
+		form.fillFromHttpRequest(req);
+		form.validate();
+		
+		if (form.hasErrors() == false) {
+			EducatorActivity ea = form.getActivityFromForm();
+			DAOProvider.getDAO().insertEducatorActivity(ea);
+		}
+		
+		return form;
+	}
+
 	
 	/**
 	 * Set the user type.

@@ -7,8 +7,9 @@
   <body>
   	<ul>
   	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/childrecord?id=${sessionScope['current.user.id']}">Provedi evidenciju</a></li>
-  	  <br>  
-  	  <a href="${pageContext.servletContext.contextPath}/">Vrati se na naslovnicu</a>
+  	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/educatoractivity?id=${sessionScope['current.user.id']}">Upis u dnevnik rada</a></li>
   	</ul>
+  	<a href="${pageContext.servletContext.contextPath}/">Vrati se na naslovnicu</a>
+  	
   </body>
 </html>

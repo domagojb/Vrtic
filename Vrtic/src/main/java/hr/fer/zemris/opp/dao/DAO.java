@@ -7,6 +7,7 @@ import hr.fer.zemris.opp.model.Group;
 import hr.fer.zemris.opp.model.Parent;
 import hr.fer.zemris.opp.model.Workplace;
 import hr.fer.zemris.opp.model.records.ChildRecord;
+import hr.fer.zemris.opp.model.records.EducatorActivity;
 import hr.fer.zemris.opp.model.users.User;
 
 /**
@@ -203,4 +204,11 @@ public interface DAO {
 	 * @param r record to insert
 	 */
 	public void insertRecord(ChildRecord r);
+	
+	/**
+	 * Inserts the given {@link EducatorActivity} into the database.
+	 * 
+	 * @param ea the activity to insert
+	 */
+	public void insertEducatorActivity(EducatorActivity ea);
 }
