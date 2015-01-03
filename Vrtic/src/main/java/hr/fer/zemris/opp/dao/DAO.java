@@ -8,6 +8,7 @@ import hr.fer.zemris.opp.model.Parent;
 import hr.fer.zemris.opp.model.Workplace;
 import hr.fer.zemris.opp.model.records.ChildRecord;
 import hr.fer.zemris.opp.model.records.EducatorActivity;
+import hr.fer.zemris.opp.model.records.PaymentRecord;
 import hr.fer.zemris.opp.model.users.User;
 
 /**
@@ -211,4 +212,21 @@ public interface DAO {
 	 * @param ea the activity to insert
 	 */
 	public void insertEducatorActivity(EducatorActivity ea);
+	
+	/**
+	 * Inserts {@link PaymentRecord} into database.
+	 * 
+	 * @param r record to persist
+	 */
+	public void insertPaymentRecord(PaymentRecord r);
+	
+	/**
+	 * Returns the educator activity with the given id from the database.
+	 * If such element does not exist <code>null</code> is returned.
+	 * 
+	 * @param id of the {@link EducatorActivity} to fetch
+	 * @return {@link EducatorActivity} with given id or <code>null</code> if such does not exist
+	 * @throws DAOException on error fetching log
+	 */
+	public EducatorActivity getEducatorActivity(long id) throws DAOException;
 }

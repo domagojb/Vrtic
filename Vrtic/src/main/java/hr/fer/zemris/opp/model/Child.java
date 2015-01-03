@@ -1,6 +1,7 @@
 package hr.fer.zemris.opp.model;
 
 import hr.fer.zemris.opp.model.records.ChildRecord;
+import hr.fer.zemris.opp.model.records.PaymentRecord;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,11 +10,13 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -76,6 +79,11 @@ public class Child {
 	 * All of the attendance records for this child.
 	 */
 	private List<ChildRecord> records = new ArrayList<ChildRecord>();
+	
+	/**
+	 * List of all payment records for the child i.e. all the months that have been payed.
+	 */
+	private List<PaymentRecord> paymentRecords = new ArrayList<PaymentRecord>();
 	
 	public Child() {
 	}
@@ -195,6 +203,34 @@ public class Child {
 		}
 		
 		records.add(record);
+	}
+
+	/**
+	 * @return the paymentRecords
+	 */
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="child")
+	public List<PaymentRecord> getPaymentRecords() {
+		return paymentRecords;
+	}
+
+	/**
+	 * @param paymentRecords the paymentRecords to set
+	 */
+	public void setPaymentRecords(List<PaymentRecord> paymentRecords) {
+		this.paymentRecords = paymentRecords;
+	}
+	
+	/**
+	 * Add a record to the {@link PaymentRecord} list.
+	 * 
+	 * @param record to add
+	 */
+	public void addPaymentRecord(PaymentRecord record) {
+		if (paymentRecords == null) {
+			paymentRecords = new ArrayList<PaymentRecord>();
+		}
+		
+		paymentRecords.add(record);
 	}
 
 	/* (non-Javadoc)
