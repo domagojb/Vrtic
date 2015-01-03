@@ -118,6 +118,25 @@ public interface DAO {
 	public List<Child> getChildrenInGroup(long id) throws DAOException;
 	
 	/**
+	 * Searches the database for children that contain the given fields.
+	 * 
+	 * The fields do not have to match the whole field. If the given argument
+	 * matches a substring then that is a match of the field.
+	 * 
+	 * Only children that contain substring with all three given fields will be returned.
+	 * 
+	 * If you don't want to search for a field you can pass the argument as an empty string 
+	 * which will match anything.
+	 * 
+	 * @param firstName substring of the first name to look for
+	 * @param lastName substring of the last name to look for
+	 * @param oib substring of the oib to look for
+	 * @return list of children containing substrings of given fields
+	 * @throws DAOException on error retrieving children
+	 */
+	public List<Child> getUsersLikeFields(String firstName, String lastName, String oib) throws DAOException;
+	
+	/**
 	 * Inserts the given parent into the database.
 	 * 
 	 * @param parent to persist

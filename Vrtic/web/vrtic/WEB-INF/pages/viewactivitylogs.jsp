@@ -20,7 +20,7 @@
 	  	      </c:forEach>
 	  	    </select>
 	  	    <!-- End Educator list -->
-	  	 </form>
+	  	  </form>
 	  	    <!-- Log list -->
 	  	    <c:choose>
 	  	      <c:when test="${logs != null && logs.isEmpty() == false }">

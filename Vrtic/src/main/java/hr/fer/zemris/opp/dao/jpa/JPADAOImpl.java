@@ -124,9 +124,21 @@ public class JPADAOImpl implements DAO {
 	public List<Child> getChildrenInGroup(long id) throws DAOException {
 		EntityManager em = JPAEMProvider.getEntityManager();
 		@SuppressWarnings("unchecked")
-		// TODO : mozda ne dela
 		List<Child> children = (List<Child>)em.createQuery("SELECT c FROM Child c WHERE c.group.id = :gi")
 				.setParameter("gi", id)
+				.getResultList();
+		return children;
+	}
+	
+	@Override
+	public List<Child> getUsersLikeFields(String firstName, String lastName,
+			String oib) throws DAOException {
+		EntityManager em = JPAEMProvider.getEntityManager();
+		@SuppressWarnings("unchecked")
+		List<Child> children = (List<Child>)em.createQuery("SELECT c FROM Child c WHERE c.firstName LIKE :fname AND c.lastName LIKE :lname AND c.oib LIKE :oib")
+				.setParameter("fname", "%" + firstName + "%")
+				.setParameter("lname", "%" + lastName + "%")
+				.setParameter("oib", "%" + oib + "%")
 				.getResultList();
 		return children;
 	}
