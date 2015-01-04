@@ -7,7 +7,8 @@
   <body>
   	<ul>
   	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/veiwactivitylogs">Pregledaj dnevnike rada</a></li>
-  	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/findchild">Pregled djece</a></li>
+  	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/eduworktime">Izračun mjesečnog rada odgajatelja</a></li>
+  	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/findchild">Pregled evidencije djece</a></li>
   	</ul>
   	<a href="${pageContext.servletContext.contextPath}/">Vrati se na naslovnicu</a>
   	

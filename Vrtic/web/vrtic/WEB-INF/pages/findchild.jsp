@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
   <head>
-    <title> "Tulipan" - Odgajatelj</title>
+    <title> "Tulipan" </title>
   </head>
   <body>
     <!-- Search form -->
@@ -47,7 +47,7 @@
 	  </c:if>
 	  <ul>
 	  <c:forEach var="child" items="${children}">
-	    <li><a>${child.firstName} ${child.lastName} OIB: ${child.oib}</a></li>
+	    <li><a href="${pageContext.servletContext.contextPath}/userpanel/showchild?id=${child.id}">${child.firstName} ${child.lastName} OIB: ${child.oib}</a></li>
 	  </c:forEach>
 	  </ul>
 	</c:if>
