@@ -9,6 +9,7 @@ import hr.fer.zemris.opp.model.Workplace;
 import hr.fer.zemris.opp.model.records.ChildRecord;
 import hr.fer.zemris.opp.model.records.EducatorActivity;
 import hr.fer.zemris.opp.model.records.PaymentRecord;
+import hr.fer.zemris.opp.model.records.SignUpRecord;
 import hr.fer.zemris.opp.model.users.User;
 
 /**
@@ -103,6 +104,14 @@ public interface DAO {
 	 * @throws DAOException on error persisting
 	 */
 	public void insertChild(Child child) throws DAOException;
+	
+	/**
+	 * Returns a list of children that are in no group.
+	 * 
+	 * @return list of children that are in no group
+	 * @throws DAOException on error retrieving those children
+	 */
+	public List<Child> getChildrenNoGroup() throws DAOException;
 	
 	public List<Child> getChildrenInGroup(Group group) throws DAOException;
 	
@@ -248,4 +257,18 @@ public interface DAO {
 	 * @throws DAOException on error fetching log
 	 */
 	public EducatorActivity getEducatorActivity(long id) throws DAOException;
+	
+	/**
+	 * Returns all the {@link SignUpRecord}s. 
+	 * 
+	 * @return all {@link SignUpRecord}s or <code>null</code> if there are none
+	 */
+	public List<SignUpRecord> getSignUpRecords();
+	
+	/**
+	 * Inserts a {@link SignUpRecord} into the database.đ
+	 * 
+	 * @param r record to persist
+	 */
+	public void insertSignUpRecord(SignUpRecord r);
 }

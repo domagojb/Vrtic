@@ -139,8 +139,8 @@ public class AddGroupForm {
 		int iLow = -1;
 		try {
 			iLow = Integer.valueOf(low);
-			if (iLow < 1) {
-				errors.put("low", "Dobna granica mora biti veća od 0");
+			if (iLow < 0) {
+				errors.put("low", "Dobna granica mora biti pozitivna");
 			}
 		} catch (NumberFormatException e) {
 			errors.put("low", "Kriva vrijednost");
@@ -149,8 +149,8 @@ public class AddGroupForm {
 		int iHigh = 0;
 		try {
 			iHigh = Integer.valueOf(high);
-			if (iHigh < 1) {
-				errors.put("high", "Dobna granica mora biti veća od 0");
+			if (iHigh < 0) {
+				errors.put("high", "Dobna granica mora biti pozitivna");
 			}
 		} catch (NumberFormatException e) {
 			errors.put("high", "Kriva vrijednost");

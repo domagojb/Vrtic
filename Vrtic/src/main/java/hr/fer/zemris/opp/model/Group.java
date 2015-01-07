@@ -1,8 +1,13 @@
 package hr.fer.zemris.opp.model;
 
+import hr.fer.zemris.opp.dao.DAOProvider;
+import hr.fer.zemris.opp.dao.jpa.JPAEMProvider;
 import hr.fer.zemris.opp.model.records.ChildRecord;
 import hr.fer.zemris.opp.model.users.User;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -10,10 +15,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.mysql.fabric.xmlrpc.base.Array;
 
 /**
  * Represents a group (a room in a {@link Workplace}) with the list
@@ -57,6 +66,11 @@ public class Group {
 	private List<Child> children = null;
 	
 	/**
+	 * List of children that want to join this group.
+	 */
+	private List<Child> signUpList;
+	
+	/**
 	 * List of educators that work in the group.
 	 */
 	private List<User> educators;
@@ -65,6 +79,12 @@ public class Group {
 	 * All of the attendance records for this group.
 	 */
 	private List<ChildRecord> records;
+	
+	/**
+	 * List used by the sign up algorithm. 
+	 * This is a non persisted field.
+	 */
+	private List<Child> signUpAlgoList;
 	
 	public Group() {
 	}
@@ -140,6 +160,35 @@ public class Group {
 		this.children = children;
 	}
 
+	/**
+	 * @return the signUpList
+	 */
+	@ManyToMany
+	@JoinTable(name="groupsignuplist")
+	public List<Child> getSignUpList() {
+		return signUpList;
+	}
+
+	/**
+	 * @param signUpList the signUpList to set
+	 */
+	public void setSignUpList(List<Child> signUpList) {
+		this.signUpList = signUpList;
+	}
+	
+	/**
+	 * Add a child to the signup list of preferences.
+	 * 
+	 * @param c
+	 */
+	public void addSignUpListChild(Child c) {
+		if (signUpList == null) {
+			signUpList = new ArrayList<Child>();
+		}
+		
+		signUpList.add(c);
+	}
+
 	@OneToMany(mappedBy="group")
 	public List<User> getEducators() {
 		return educators;
@@ -177,6 +226,84 @@ public class Group {
 		return children.size();
 	}
 	
+	/**
+	 * @return the signUpAlgoList
+	 */
+	@Transient
+	public List<Child> getSignUpAlgoList() {
+		return signUpAlgoList;
+	}
+
+	/**
+	 * @param signUpAlgoList the signUpAlgoList to set
+	 */
+	public void setSignUpAlgoList(List<Child> signUpAlgoList) {
+		this.signUpAlgoList = signUpAlgoList;
+	}
+	
+	public void addSignUpAlgoChild(Child c) {
+		if (signUpAlgoList == null) {
+			signUpAlgoList = new ArrayList<Child>();
+		}
+		
+		signUpAlgoList.add(c);
+	}
+	
+	/**
+	 * Sorts the {@link #signUpAlgoList} children by priority and then 
+	 * by social status. If none of those differ, then there is no defined
+	 * behavior.
+	 * 
+	 * You can get the prioritized children as {@link #getSignUpAlgoList()} with
+	 * the first element being the highest priority.
+	 */
+	public void rankSignUpAlgoChildren() {
+		if (signUpAlgoList == null) {
+			signUpAlgoList = new ArrayList<Child>();
+			return;
+		}
+		
+		if (signUpAlgoList.size() < 2) {
+			return;
+		}
+		
+		Collections.sort(this.signUpAlgoList, new SignUpAlgoChildComparator());
+	}
+	
+	/**
+	 * Adds children from the {@link #signUpAlgoList} to the list of children in the group.
+	 * The children are officially signed.
+	 * 
+	 * The child will get the group too.
+	 */
+	public void saveSignUps() {		
+		Group me = DAOProvider.getDAO().getGroup(this.id);
+		
+		List<Child> cldrn = me.getChildren();
+		if (cldrn == null) {
+			cldrn = new ArrayList<Child>();
+		}
+		
+		for (Child c : cldrn) {
+			System.out.println("---" + c.getId()+ " " + c.getFirstName() + " " + c.getLastName());
+		}
+		
+		System.out.println("Group " + me.getId() + ". Saving children: ");
+
+		
+		for (Child c : signUpAlgoList) {
+			System.out.println("> " + c.getId()+ " " + c.getFirstName() + " " + c.getLastName());
+			
+			Child sChild = DAOProvider.getDAO().getChild(c.getId());
+			System.out.println("> " + sChild.getId()+ " " + sChild.getFirstName() + " " + sChild.getLastName());
+
+			sChild.setGroup(me);
+			cldrn.add(sChild);
+			me.setChildren(cldrn);
+		}
+		
+	}
+
 	/**
 	 * Tells if there is room in the group, i.e. the capacity hasn't been reached.
 	 * 

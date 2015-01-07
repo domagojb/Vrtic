@@ -13,6 +13,8 @@
   	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/addgroup">Dodaj grupu</a></li>  	
   	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/addchild">Upiši dijete</a></li>  
   	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/removechild">Ispiši dijete</a></li> 	
+  	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/opensignup">Otvori prijave</a></li> 	
+  	  <li><a href="${pageContext.servletContext.contextPath}/userpanel/closesignup">Zatvori prijave</a></li> 	
   	  <br>  
   	  <a href="${pageContext.servletContext.contextPath}/">Vrati se na naslovnicu</a>
   	</ul>

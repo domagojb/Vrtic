@@ -14,6 +14,7 @@ import hr.fer.zemris.opp.model.Workplace;
 import hr.fer.zemris.opp.model.records.ChildRecord;
 import hr.fer.zemris.opp.model.records.EducatorActivity;
 import hr.fer.zemris.opp.model.records.PaymentRecord;
+import hr.fer.zemris.opp.model.records.SignUpRecord;
 import hr.fer.zemris.opp.model.users.User;
 
 /**
@@ -114,6 +115,15 @@ public class JPADAOImpl implements DAO {
 		JPAEMProvider.getEntityManager().persist(child);
 	}
 
+	@Override
+	public List<Child> getChildrenNoGroup() throws DAOException {
+		EntityManager em = JPAEMProvider.getEntityManager();
+		@SuppressWarnings("unchecked")
+		List<Child> children = (List<Child>)em.createQuery("SELECT c FROM Child c WHERE c.group IS NULL")
+				.getResultList();
+		return children;
+	}
+	
 	@Override
 	public List<Child> getChildrenInGroup(Group group) throws DAOException {
 		// TODO Auto-generated method stub
@@ -268,5 +278,18 @@ public class JPADAOImpl implements DAO {
 		}
 		
 		return log;
+	}
+	
+	@Override
+	public List<SignUpRecord> getSignUpRecords() {
+		EntityManager em = JPAEMProvider.getEntityManager();
+		@SuppressWarnings("unchecked")
+		List<SignUpRecord> records = (List<SignUpRecord>)em.createQuery("SELECT s FROM SignUpRecord s").getResultList();
+		return records;
+	}
+	
+	@Override
+	public void insertSignUpRecord(SignUpRecord r) {
+		JPAEMProvider.getEntityManager().persist(r);		
 	}
 }
