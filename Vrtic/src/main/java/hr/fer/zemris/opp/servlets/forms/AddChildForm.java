@@ -496,6 +496,10 @@ public class AddChildForm {
 		if (this.phone.isEmpty()) {
 			errors.put("phone", "Broj je obavezan");
 		}
+		
+		if (this.phone.matches(".*\\D.*")) {
+			errors.put("phone", "Broj je neispravan");
+		}
 
 		if (this.socialStatus != null
 				&& (this.income.isEmpty() || this.income.matches(".*\\D.*"))) {
@@ -515,6 +519,13 @@ public class AddChildForm {
 		if (this.cOIB.isEmpty() || this.cOIB.length() != OIBLEN
 				|| this.cOIB.matches(".*\\D.*")) {
 			errors.put("c_oib", "Krivi unos");
+		}
+		
+		if (!(hasError("c_oib") || hasError("oib"))) {
+			if (this.cOIB.equals(pOIB)) {
+				errors.put("oib", "OIB roditelja i djeteta se preklapa");
+				errors.put("c_oib", "OIB roditelja i djeteta se preklapa");
+			}
 		}
 
 	}

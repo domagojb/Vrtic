@@ -1,0 +1,11 @@
+/*
+ * CSS za upisne forumaler 
+ */
+ 
+.form_td_info_text {
+	text-align: right;
+}
+ 
+.greska {
+	color: red;
+}
