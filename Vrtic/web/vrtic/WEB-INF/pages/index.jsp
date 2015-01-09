@@ -1,3 +1,5 @@
+<%@page import="java.util.List"%>
+<%@page import="hr.fer.zemris.opp.model.Group"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -20,11 +22,15 @@
   	<script src="js/vendor/modernizr.js"></script>
     
     <script language="javascript">
-    	function add() {
-    		var element = document.getElementById("id_group").cloneNode(true);
-    		
+    	function addGroup() {
     		var foo = document.getElementById("fooBar");
-    		foo.appendChild(element);
+    		var a = foo.childNodes.length;
+    		var d = <%=((Integer)((List<Group>)request.getAttribute("groups")).size())%>;  
+    		if (a < (d+2)) {
+    			var element = document.getElementById("id_group").cloneNode(true);
+    		
+    			foo.appendChild(element);
+    		}
     	}
     	
     	function removeGroup() {
@@ -38,7 +44,7 @@
     
   </head>
   <body>
-  	<!-- Navigation toolbar -->
+  	<!-- TOP BAR -->
   	<div class="row">
   	  <div class="twelve columns">
 	  	<nav class="top-bar contain-to-grid" data-topbar role="navigation">
@@ -55,17 +61,18 @@
 		    <ul class="right">
 		      <c:choose >
 		        <c:when test="${sessionScope['current.user.id'] != null}">
-		          <li>${sessionScope['current.user.fn']} ${sessionScope['current.user.ln']} <li>
+		          <li><a href="#">${sessionScope['current.user.fn']} ${sessionScope['current.user.ln']}</a><li>
 		          <li><a href="logout" class="button">Logout</a></li>
 		        </c:when>
 		        <c:otherwise>
-			   	  <li>Trenutno niste ulogirani</li>
+			   	  <li><a href="#">Trenutno niste ulogirani</a></li>
 			    </c:otherwise>
 			  </c:choose>
 		    </ul>
 		
 		    <!-- Left Nav Section -->
 		    <ul class="left">
+		      <li><a href="${pageContext.servletContext.contextPath}/pages/onama.html">O nama</a></li>
 		      <c:if test="${sessionScope['current.user.id'] != null}">
 		        <c:choose>
 		          <c:when test="${sessionScope['current.user.t'] == 'adm'}">
@@ -83,128 +90,209 @@
 		  </section>
 		</nav>
 	  </div>
-	</div>
+	</div> <!-- TOP BAR END -->
   
     <!-- START BODY ROW-->
     <div class="row">
        <!-- START LEFT BODY -->
-       <div class="small-12 large-8 columns">
-	    <c:if test="${confirmationMsg != null }">
-	      <p>${confirmationMsg}</p>
-	    </c:if>
-	    
+       <div class="small-12 large-8 columns"> 
 	    <c:choose>
 	      <c:when test="${signUpOpen == true}">
 	        <h1>Prijave</h1>
 	        <p>Otvorene su prijave za upis djece u vrtić. Ako želite upisati dijete, popunite formular ispod.</p>
-	        <c:if test="${form.hasErrors() }">
-	      	  <div data-alert class="alert-box alert round">
- 				Postoje greške u formularu
-  				<a href="#" class="close">&times;</a>
-		  	 </div>
-			</c:if>
+	        <c:choose>
+	          <c:when test="${alert == true}">
+	      	    <div data-alert class="alert-box alert radius">
+ 				  Postoje greške u formularu
+  				  <a href="#" class="close">&times;</a>
+		  	    </div>
+		  	  </c:when>
+		  	  <c:when test="${confirmation == true}">
+	      	    <div data-alert class="alert-box success radius">
+ 				  Prijava je uspješno poslana
+  				  <a href="#" class="close">&times;</a>
+		  	    </div>
+		  	  </c:when>
+			</c:choose>
 		    <form method="post">
-		      <table class="form_table">
-		       <tr><td colspan="2"><p>Poredajte grupe u koje želite upisati dijete po prioritetu.</p></td></tr>
-		       
-		       <tr><td colspan="2"><ol id="fooBar">
-		       					     <li id="id_group">
-		       					       <select name="group"> 
-		    	 					 	  <c:forEach var="group" items="${groups}">
-			        						<option value="${group.id}">
-			        						  <c:out value="${group.workplace.address}" />, <c:out value="${group.workplace.town}" /> 
-			        						  <c:out value="${group.low}" />-<c:out value="${group.high}" />
-			        						</option>
-			      						  </c:forEach>
-		    	 					   </select>
-		    	 				    </li>			 
-		    	 	 			  </ol>
-		    	 	 			  <c:if test="${form.hasError('group')}">
-				        		    <div class="greska"><c:out value="${form.getError('group')}" /></div>
-				     			  </c:if>
-		    	 	 			  
-				     </td>
-				     				 
-		    	 	 </tr>
-		    	 	
-		       <tr><td></td><td><input class="small button" type="button" value="Dodaj grupu" onclick="add()"> <input class="small button" type="button" value="Makni grupu" onclick="removeGroup()"></td></tr>
-		       
-		    	 <tr><td colspan="2">Upišite podatke roditelja ili skrbnika</td></tr>
-				 <tr><td class="form_td_info_text">Ime</td><td> <input type="text" name="firstname" value='<c:out value="${form.pFirstName}" />' size ="40">
-				     <c:if test="${form.hasError('firstname')}">
-				         <div class="greska"><c:out value="${form.getError('firstname')}" /></div>
-				     </c:if></td>
-				 </tr>
+		      
+		      
+		      <div class="row">
+    			<div class="large-12 columns"> 
+    			  <label>Poredajte grupe u koje želite upisati dijete po prioritetu.</label>
+    			  
+		          <ol id="fooBar">
+				    <li id="id_group">
+  					  <select name="group"> 
+ 					    <c:forEach var="group" items="${groups}">
+    						<option value="${group.id}">
+    						  <c:out value="${group.workplace.address}" />, <c:out value="${group.workplace.town}" /> 
+    						  <c:out value="${group.low}" /> do <c:out value="${group.high} godine" />
+    						</option>
+  						</c:forEach>
+ 					 </select>
+ 				   </li>			 
+ 	 			 </ol>
+ 	 			 
+ 	 			 <c:if test="${form.hasError('group')}">
+     		       <small class="error"><c:out value="${form.getError('group')}" /></small>
+  			     </c:if>
+		       </div> 			  
+		     </div>
+		     
+		     <div class="row">
+    		   <div class="large-6 columns">	 	
+		         <input class="small button" type="button" value="Dodaj grupu" onclick="addGroup()"> 
+		       </div>
+		       <div class="large-6 columns">	 	
+		         <input class="small button" type="button" value="Makni grupu" onclick="removeGroup()">
+		       </div>
+		     </div>
+		     
+		     <div class="row">
+    		   <div class="large-12 columns">
+		         <p>Upišite podatke roditelja ili skrbnika</p>
+		       </div>
+		     </div>
+		     
+		     <div class="row">
+    		   <div class="large-6 columns">
+				 <label>Ime
+				   <input type="text" name="firstname" value='<c:out value="${form.pFirstName}" />' >
+				 </label>
+			     <c:if test="${form.hasError('firstname')}">
+			       <small class="error"><c:out value="${form.getError('firstname')}" /></small>
+			     </c:if>
+			   </div> 
+			 
 				     
-				 <tr><td class="form_td_info_text">Prezime</td><td> <input type="text" name="lastname" value='<c:out value="${form.pLastName}" />' size ="40">
-				     <c:if test="${form.hasError('lastname')}">
-				         <div class="greska"><c:out value="${form.getError('lastname')}" /></div>
-				     </c:if></td>
-				 </tr>
+			   <div class="large-6 columns">
+				 <label>Prezime 
+				   <input type="text" name="lastname" value='<c:out value="${form.pLastName}" />' >
+				 </label>
+			     <c:if test="${form.hasError('lastname')}">
+			       <small class="error"><c:out value="${form.getError('lastname')}" /></small>
+			     </c:if>
+			   </div>
+			 </div>	 
+		     <div class="row">
+    		   <div class="large-12 columns">
+				 <label>OIB 
+				 <input type="text" name="oib" value='<c:out value="${form.pOIB}" />' >
+				 </label>
+			     <c:if test="${form.hasError('oib')}">
+			       <small class="error"><c:out value="${form.getError('oib')}" /></small>
+			     </c:if>
+			   </div>
+			 </div>
 				 
-				 <tr><td class="form_td_info_text">OIB</td><td> <input type="text" name="oib" value='<c:out value="${form.pOIB}" />' size ="40">
-				     <c:if test="${form.hasError('oib')}">
-				         <div class="greska"><c:out value="${form.getError('oib')}" /></div>
-				     </c:if></td>
-				 </tr>
 				     
-				 <tr><td class="form_td_info_text">Adresa</td><td> <input type="text" name="address" value='<c:out value="${form.address}" />' size ="40">
-				     <c:if test="${form.hasError('address')}">
-				         <div class="greska"><c:out value="${form.getError('address')}" /></div>
-				     </c:if></td>
-				 </tr>    
-				
-				 <tr><td class="form_td_info_text">Telefon</td><td> <input type="text" name="phone" value='<c:out value="${form.phone}" />' size ="40">
-				     <c:if test="${form.hasError('phone')}">
-				         <div class="greska"><c:out value="${form.getError('phone')}" /></div>
-				     </c:if></td>
-				 </tr>
+		     <div class="row">
+    		   <div class="large-12 columns">
 				 
-				 <tr><td colspan="2">Ako se potražuje pravo na temelju socijalnog statusa</td></tr>
-				 <tr><td colspan="2"><input type="checkbox" name="socialstatus" value="1">Označiti ako se traži</td></tr>
-				 <tr><td class="form_td_info_text">Primanja (mjesečna)</td><td> <input type="text" name="income" value='<c:out value="${form.income}" />' size ="40">HRK
-				     <c:if test="${form.hasError('income')}">
-				         <div class="greska"><c:out value="${form.getError('income')}" /></div>
-				     </c:if></td>
-				 </tr>
-				
-				 <tr><td colspan="2">Podaci o djetetu</td></tr>
-				 <tr><td class="form_td_info_text">Ime</td><td> <input type="text" name="c_firstname" value='<c:out value="${form.cFirstName}" />' size ="40">
-				     <c:if test="${form.hasError('c_firstname')}">
-				         <div class="greska"><c:out value="${form.getError('c_firstname')}" /></div>
-				     </c:if></td>
-				 </tr>
-				     
-				 <tr><td class="form_td_info_text">Prezime</td><td> <input type="text" name="c_lastname" value='<c:out value="${form.cLastName}" />' size ="40">
-				     <c:if test="${form.hasError('c_lastname')}">
-				         <div class="greska"><c:out value="${form.getError('c_lastname')}" /></div>
-				     </c:if></td>
-				 </tr>
+				 <label>Adresa 
+				   <input type="text" name="address" value='<c:out value="${form.address}" />' >
+				 </label>
+			     <c:if test="${form.hasError('address')}">
+			       <small class="error"><c:out value="${form.getError('address')}" /></small>
+			     </c:if>
+			   </div>
+			 </div>
+				    
+		     <div class="row">
+    		   <div class="large-12 columns">				
+				 <label>Telefon
+				   <input type="text" name="phone" value='<c:out value="${form.phone}" />' >
+				 </label>
+			     <c:if test="${form.hasError('phone')}">
+			       <small class="error"><c:out value="${form.getError('phone')}" /></small>
+			     </c:if>
+			   </div>
+			 </div>
 				 
-				 <tr><td class="form_td_info_text">OIB</td><td> <input type="text" name="c_oib" value='<c:out value="${form.cOIB}" />' size ="40">
-				     <c:if test="${form.hasError('c_oib')}">
-				         <div class="greska"><c:out value="${form.getError('c_oib')}" /></div>
-				     </c:if></td>
-				 </tr>
+		     <div class="row">
+    		   <div class="large-12 columns">
+		         <p>Ako se potražuje pravo na temelju socijalnog statusa</p>
+		       </div>
+		     </div>
 				 
-				 <tr><td class="form_td_info_text">Spol</td><td><select name="sex"> 
-			        				  <option value="m">M</option>
-			        				  <option value="f">F</option>
-		    	 					 </select>
-		    	 					 
-		    	 	 </td></tr>
-				 <tr><td class="form_td_info_text">Datum rođenja</td><td><input type="date" name="birthdate">
-				     <c:if test="${form.hasError('bday')}">
-				         <div class="greska"><c:out value="${form.getError('bday')}" /></div>
-				     </c:if></td>
-				 </tr>
+		     <div class="row">
+    		   <div class="large-4 columns">				 
+				 <input type="checkbox" name="socialstatus" value="1" id="checkbox1"><label for="checkbox1">Označiti ako se traži</label>
+			   </div>
+    		   <div class="large-8 columns">
+    		     <div class="row collapse">				 
+				   <label>Primanja (mjesečna)</label>
+				   <div class="small-9 columns">
+				     <input type="text" name="income" value='<c:out value="${form.income}" />' >
+				   </div>
+				   <div class="small-3 columns">
+          		     <span class="postfix">HRK</span>
+        		   </div>
+        		 </div>
+				 <c:if test="${form.hasError('income')}">
+				   <small class="error"><c:out value="${form.getError('income')}" /></small>
+				 </c:if>			     
+			   </div>
+			 </div> 
 				
-				 <tr><td></td><td>
-				     <input class="button" type="submit" name="method"	value="Upis">
-				     </td>
-				 </tr>
-			  </table>
-		    </form>
+		     <div class="row">
+    		   <div class="large-12 columns">
+		         <p>Upišite podatke djeteta</p>
+		       </div>
+		     </div>
+		     
+		     <div class="row">
+    		   <div class="large-6 columns">
+			     <label>Ime
+				  <input type="text" name="c_firstname" value='<c:out value="${form.cFirstName}" />' >
+				 </label>
+			     <c:if test="${form.hasError('c_firstname')}">
+			       <small class="error"><c:out value="${form.getError('c_firstname')}" /></small>
+			     </c:if>
+			   </div>
+			
+    		   <div class="large-6 columns">				     
+				 <label>Prezime
+				   <input type="text" name="c_lastname" value='<c:out value="${form.cLastName}" />' >
+				 </label>
+			     <c:if test="${form.hasError('c_lastname')}">
+			       <small class="error"><c:out value="${form.getError('c_lastname')}" /></small>
+			     </c:if>
+			   </div>
+			 </div>
+				 
+		     <div class="row">
+    		   <div class="large-12 columns">				 
+				 <label>OIB
+				   <input type="text" name="c_oib" value='<c:out value="${form.cOIB}" />'>
+				 </label>
+			     <c:if test="${form.hasError('c_oib')}">
+			       <small class="error"><c:out value="${form.getError('c_oib')}" /></small>
+			     </c:if>
+			   </div>
+			 </div>	 
+
+		     <div class="row">
+    		   <div class="large-3 columns">				 
+				 <label>Spol
+				   <select name="sex"> 
+			         <option value="m">M</option>
+			         <option value="f">F</option>
+		    	   </select>
+		    	 </label>
+		       </div>
+    		   <div class="large-9 columns">				 
+		         <label>Datum rođenja
+				   <input type="date" name="birthdate">
+				 </label>
+			     <c:if test="${form.hasError('bday')}">
+			       <small class="error"><c:out value="${form.getError('bday')}" /></small>
+			     </c:if>
+			   </div>
+			 </div>
+		     <input class="button" type="submit" name="method"	value="Upis">				     				 			  
+		   </form>
 	      </c:when>
 	      <c:otherwise>
 	        <p>Upisi u vrtić trenutno nisu otvoreni</p>
@@ -258,10 +346,33 @@
 			  	</div>
 	          </c:when>
 	          <c:when test="${sessionScope['current.user.t'] == 'edu'}">
-	            <a href="${pageContext.servletContext.contextPath}/userpanel">Odgajateljni panel</a>          
+	            <div class="row">
+	              <div class="small-12 large-12 columns">
+			  	    <a class="button" href="${pageContext.servletContext.contextPath}/userpanel/childrecord?id=${sessionScope['current.user.id']}">Provedi evidenciju</a>
+			  	  </div>
+			    </div>
+			    <div class="row">
+	              <div class="small-12 large-12 columns">
+			  	    <a class="button" href="${pageContext.servletContext.contextPath}/userpanel/educatoractivity?id=${sessionScope['current.user.id']}">Upis u dnevnik rada</a>
+			  	  </div>
+			    </div>         
 	          </c:when>
 	          <c:when test="${sessionScope['current.user.t'] == 'acc'}">
-	            <a href="${pageContext.servletContext.contextPath}/userpanel">Računovodstveni panel</a>
+	            <div class="row">
+	              <div class="small-12 large-12 columns">
+			  	    <a class="button" href="${pageContext.servletContext.contextPath}/userpanel/veiwactivitylogs">Pregledaj dnevnike rada</a>
+			  	  </div>
+			    </div>
+			    <div class="row">
+	              <div class="small-12 large-12 columns">
+			  	    <a class="button" href="${pageContext.servletContext.contextPath}/userpanel/eduworktime">Izračun mjesečnog rada odgajatelja</a>
+			  	  </div>
+			    </div>
+			    <div class="row">
+	              <div class="small-12 large-12 columns">
+			  	    <a class="button" href="${pageContext.servletContext.contextPath}/userpanel/findchild">Pregled evidencije djece</a>
+			  	  </div>
+			    </div>  
 	          </c:when>
 	        </c:choose>
 	      </c:when>
@@ -269,14 +380,26 @@
 	      	<p>Trenutno niste ulogirani.</p>
 	      	<!-- Login form -->
 		    <form method="post">
-		    <table class="form_table">
-		      <tr><td class="form_td_info_text">Korisničko ime</td><td> <input type="text" name="username"  size ="40"></td></tr>
-			  <tr><td class="form_td_info_text">Zaporka</td><td> <input type="password" name="password"  size ="40"></td></tr>
-			  <tr><td colspan="2"><c:if test="${loginError != null}">
-			                          <div class="greska"><c:out value="${loginError}" /></div>
-			                      </c:if></td></tr>
-			  <tr><td></td><td><input class="button" type="submit" name="method" value="Log in"></td></tr>
-			 </table>
+		      <div class="row">
+    			<div class="large-12 columns">
+    			  <label>Korisničko ime 
+    			    <input type="text" name="username" placeholder="Korisničko ime">
+    			  </label>
+    			</div>
+    		  </div>
+    		  
+		      <div class="row">
+    			<div class="large-12 columns">
+    			  <label>
+			        Zaporka
+			        <input type="password" name="password"  placeholder="Zaporka">
+			      </label>
+			    </div>
+			  </div>
+			  <c:if test="${loginError != null}">
+			     <small class="error"><c:out value="${loginError}" /></small>
+			  </c:if>
+			  <input class="button" type="submit" name="method" value="Log in"> 
 		    </form>
 		    <!-- End login form -->
 	      </c:otherwise>

@@ -121,11 +121,9 @@ public class Index extends HttpServlet{
 				
 				List<Group> groups = DAOProvider.getDAO().getAllGroups();
 				
-				String msg = "drekec";
-
 				req.setAttribute("groups", groups);
 				req.setAttribute("form", form);
-				req.setAttribute("alertMsg", msg);
+				req.setAttribute("alert", true);
 				req.getRequestDispatcher("/WEB-INF/pages/index.jsp").forward(req, resp);
 				return;
 			}
@@ -138,8 +136,7 @@ public class Index extends HttpServlet{
 			p.addChild(c);
 			DAOProvider.getDAO().insertChild(c);
 			
-			req.setAttribute("confirmationMsg", "Prijava uspješno poslana");
-			resp.sendRedirect(req.getServletContext().getContextPath());
+			resp.sendRedirect(req.getServletContext().getContextPath() + "/success");
 			return;
 		
 		}

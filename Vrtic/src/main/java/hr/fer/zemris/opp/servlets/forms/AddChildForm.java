@@ -437,8 +437,6 @@ public class AddChildForm {
 	public void validate() {
 		errors.clear();
 
-		// Is the kid of the right age? Huh?
-
 		boolean skip = false;
 		try {
 			bdaydate = new SimpleDateFormat("yyyy-MM-dd").parse(bday);
@@ -451,6 +449,20 @@ public class AddChildForm {
 		for (String sGID : groupId) {
 			Long gid = Long.valueOf(sGID);
 			selectedGroups.add(DAOProvider.getDAO().getGroup(gid));
+		}
+		
+		for (int i = 0; i < groupId.length - 1; i++) {
+			boolean foundErr = false;
+			for(int j = i; j < groupId.length; j++) {
+				if (groupId[i].equals(groupId[j])) {
+					errors.put("group", "Odabrali ste istu grupu vise puta");
+					foundErr = true;
+					break;
+				}
+			}
+			if (foundErr) {
+				break;
+			}
 		}
 
 		if (!skip) {
