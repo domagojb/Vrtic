@@ -48,7 +48,7 @@ public class FindChild extends HttpServlet {
 			return;
 		}
 		
-		if (method.equals("Pretrazi")) {
+		if (method.equals("Pretraga")) {
 			String firstName = req.getParameter("firstName");
 			String lastName = req.getParameter("lastName");
 			String oib = req.getParameter("oib");

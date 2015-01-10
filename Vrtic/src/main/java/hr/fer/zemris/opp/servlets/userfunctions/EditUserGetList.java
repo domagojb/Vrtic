@@ -81,7 +81,7 @@ public class EditUserGetList extends HttpServlet {
 			throws ServletException, IOException {
 		String method = req.getParameter("method");
 		// if the change group method was called
-		if (method.equals("Izmjeni grupu")) {
+		if (method.equals("Izmijeni grupu")) {
 			changeGroup(req, resp);
 			resp.sendRedirect(req.getServletContext().getContextPath() + "/userpanel");
 			return;

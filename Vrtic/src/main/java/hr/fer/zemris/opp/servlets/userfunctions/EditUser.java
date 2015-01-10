@@ -23,14 +23,14 @@ public class EditUser extends HttpServlet {
 		
 			String option = req.getParameter("method");
 			EditUserForm form = new EditUserForm();
-			if (option.equals("Izmjeni podatke")) {
+			if (option.equals("Izmijeni podatke")) {
 				form.fillFromHttpRequest(req, EditUserForm.Option.INFO);
 				form.validate();
 				
 				if(form.hasErrors()) {
 					req.setAttribute("form", form);
 					req.setAttribute("id", req.getParameter("id"));
-					req.setAttribute("option", "Izmjeni podatke");
+					req.setAttribute("option", "Izmijeni podatke");
 					req.getRequestDispatcher("/WEB-INF/pages/edituser.jsp").forward(req, resp);
 					return;
 				}
@@ -45,14 +45,14 @@ public class EditUser extends HttpServlet {
 				return;
 			} 
 			
-			if (option.equals("Izmjeni lozinku")) {
+			if (option.equals("Izmijeni lozinku")) {
 				form.fillFromHttpRequest(req, EditUserForm.Option.PASSWORD);
 				form.validate();
 				
 				if(form.hasErrors()) {
 					req.setAttribute("form", form);
 					req.setAttribute("id", req.getParameter("id"));
-					req.setAttribute("option", "Izmjeni lozinku");
+					req.setAttribute("option", "Izmijeni lozinku");
 					req.getRequestDispatcher("/WEB-INF/pages/edituser.jsp").forward(req, resp);
 					return;
 				}

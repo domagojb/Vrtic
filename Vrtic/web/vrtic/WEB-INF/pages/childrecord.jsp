@@ -2,50 +2,115 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
   <head>
-    <title>Vrtic buducnosti</title>
+    <title>Evidencija</title>
     
     <!-- Setting gate to todays date -->
     <script type="text/javascript">
       document.getElementById('datePicker').valueAsDate = new Date();
     </script>
-    
+ 
+    <!-- Foundation -->
+    <meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  	
+  	<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/normalize.css">
+  	<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/foundation.css">
+  	
+  	<script src="${pageContext.servletContext.contextPath}/js/vendor/modernizr.js"></script>   
   </head>
   <body>
-    <c:choose>
-      <c:when  test="${children != null && !children.isEmpty()}">
-      <form method="post">
-        <input type="hidden" name="gid" value="${group.id}">
-        <table>
-          <tr><td>Datum</td><td><input id="datePicker" type="date" name="date">
-		    <c:if test="${form.hasError('date')}">
-		      <div class="greska"><c:out value="${form.getError('date')}" /></div>
-		    </c:if></td>
-		  </tr>
-          <tr><td colspan="2">Odaberite prisutnu djecu</td></tr>
-          <tr><td colspan="2">
-    	 					 	<c:forEach var="child" items="${children}">
-	        						<input type="checkbox" name="children" value="${child.id}">
-	        						  <c:out value="${child.firstName}" /> <c:out value="${child.lastName}" />; OIB: <c:out value="${child.oib}" />
-	        						<br>
-	      						</c:forEach>
-    	 				
-    	 			
-    	 	    </td></tr>
+  
+    <!-- TOP BAR -->
+  	<div class="row">
+  	  <div class="twelve columns">
+	  	<nav class="top-bar contain-to-grid" data-topbar role="navigation">
+		  <ul class="title-area">
+		    <li class="name">
+		      <h1><a href="${pageContext.servletContext.contextPath}">Naslovnica</a></h1>
+		    </li>
+		     <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+		    <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+		  </ul>
 		
-		    <tr><td></td><td>
-		        <input type="submit" name="metoda"	value="Upiši">
-		        </td>
-		    </tr>
-	     </table>
-        </form>
-      </c:when>
-      <c:when test="${group == null}">
-        <p>Trenutno nemate pridjeljenu grupu</p>
-      </c:when>
-      <c:otherwise>
-        <p>Trenutno nema djece u grupi</p>
-      </c:otherwise>
-    </c:choose>    
-    <a href="${pageContext.servletContext.contextPath}/userpanel">Vrati se na izbornik</a>
+		  <section class="top-bar-section">
+		    <!-- Right Nav Section -->
+		    <ul class="right">
+		      <c:choose >
+		        <c:when test="${sessionScope['current.user.id'] != null}">
+		          <li><a href="#">${sessionScope['current.user.fn']} ${sessionScope['current.user.ln']}</a><li>
+		          <li><a href="${pageContext.servletContext.contextPath}/logout" class="button">Logout</a></li>
+		        </c:when>
+		        <c:otherwise>
+			   	  <li><a href="#">Trenutno niste ulogirani</a></li>
+			    </c:otherwise>
+			  </c:choose>
+		    </ul>
+		
+		    <!-- Left Nav Section -->
+		    <ul class="left">
+		      <li><a href="${pageContext.servletContext.contextPath}/pages/onama.html">O nama</a></li>
+		      <c:if test="${sessionScope['current.user.id'] != null}">
+		        <c:choose>
+		          <c:when test="${sessionScope['current.user.t'] == 'adm'}">
+		            <li><a href="${pageContext.servletContext.contextPath}/userpanel">Administrativni panel</a></li>
+		          </c:when>
+		          <c:when test="${sessionScope['current.user.t'] == 'edu'}">
+		            <li><a href="${pageContext.servletContext.contextPath}/userpanel">Odgajateljni panel</a></li>         
+		          </c:when>
+		          <c:when test="${sessionScope['current.user.t'] == 'acc'}">
+		            <li><a href="${pageContext.servletContext.contextPath}/userpanel">Računovodstveni panel</a></li>
+		          </c:when>
+		        </c:choose>
+	          </c:if>
+		    </ul>
+		  </section>
+		</nav>
+	  </div>
+	</div> <!-- TOP BAR END -->
+	
+	<div class="row">
+  	  <div class="twelve columns">
+  	    <h1>Evidencija prisutnosti</h1>
+	    <c:choose>
+	      <c:when  test="${children != null && !children.isEmpty()}">
+	      <form method="post">
+	        <input type="hidden" name="gid" value="${group.id}">
+	        <div class="row">
+	          <div class="large-6 columns">
+	            <label>Datum
+	              <input id="datePicker" type="date" name="date">
+	            </label>
+			    <c:if test="${form.hasError('date')}">
+			      <small class="error"><c:out value="${form.getError('date')}" /></small>
+			    </c:if>
+			  </div>
+			</div>
+	        <div class="row">
+	          <div class="large-12 columns">			
+	            <label>Odaberite prisutnu djecu</label>	          
+			    <c:forEach var="child" items="${children}">
+ 				  <input type="checkbox" name="children" value="${child.id}">
+ 				  <label><c:out value="${child.firstName}" /> <c:out value="${child.lastName}" />; OIB: <c:out value="${child.oib}" /></label>
+ 				  <br>
+			    </c:forEach>	
+			 </div>			    
+		   </div>
+	        <div class="row">
+	          <div class="large-12 columns">		   	     
+			    <input class="button" type="submit" name="metoda"	value="Upiši">
+			  </div>
+			</div>			       
+	      </form>
+	      </c:when>
+	      <c:when test="${group == null}">
+	        <p>Trenutno nemate pridjeljenu grupu</p>
+	      </c:when>
+	      <c:otherwise>
+	        <p>Trenutno nema djece u grupi</p>
+	      </c:otherwise>
+	    </c:choose>    
+	    <a href="${pageContext.servletContext.contextPath}/userpanel">Vrati se na izbornik</a>
+	  </div>
+	</div>
   </body>
 </html>

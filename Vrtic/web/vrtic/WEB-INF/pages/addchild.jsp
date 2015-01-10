@@ -15,7 +15,7 @@
   	<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/normalize.css">
   	<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/foundation.css">
   	
-  	<script src="js/vendor/modernizr.js"></script>
+  	<script src="${pageContext.servletContext.contextPath}/js/vendor/modernizr.js"></script>
   </head>
   <body>
     <!-- TOP BAR -->
@@ -24,7 +24,7 @@
 	  	<nav class="top-bar contain-to-grid" data-topbar role="navigation">
 		  <ul class="title-area">
 		    <li class="name">
-		      <h1><a href="#">Naslovnica</a></h1>
+		      <h1><a href="${pageContext.servletContext.contextPath}">Naslovnica</a></h1>
 		    </li>
 		     <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
 		    <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
@@ -36,7 +36,7 @@
 		      <c:choose >
 		        <c:when test="${sessionScope['current.user.id'] != null}">
 		          <li><a href="#">${sessionScope['current.user.fn']} ${sessionScope['current.user.ln']}</a><li>
-		          <li><a href="logout" class="button">Logout</a></li>
+		          <li><a href="${pageContext.servletContext.contextPath}/logout" class="button">Logout</a></li>
 		        </c:when>
 		        <c:otherwise>
 			   	  <li><a href="#">Trenutno niste ulogirani</a></li>
@@ -69,7 +69,7 @@
     <form method="post">
 		      <div class="row">
     			<div class="large-12 columns"> 
-    			  <h1>Upis djeteta:</h1>
+    			  <h1>Upis djeteta</h1>
                   <label>Odaberite grupu</label>
                     <select name="group"> 
  	 				  <c:forEach var="group" items="${groups}">
@@ -80,8 +80,8 @@
 					  </c:forEach>
  	 			    </select>
  	 			   <c:if test="${form.hasError('group')}">
-        		     <div class="greska"><c:out value="${form.getError('group')}" /></div>
-    			   </c:if></td>
+        		     <small class="error"><c:out value="${form.getError('group')}" /></small>
+    			   </c:if>
     	 	     </div>
     	 	   </div>
  

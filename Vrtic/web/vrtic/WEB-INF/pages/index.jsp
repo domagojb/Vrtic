@@ -62,7 +62,7 @@
 		      <c:choose >
 		        <c:when test="${sessionScope['current.user.id'] != null}">
 		          <li><a href="#">${sessionScope['current.user.fn']} ${sessionScope['current.user.ln']}</a><li>
-		          <li><a href="logout" class="button">Logout</a></li>
+		          <li><a href="${pageContext.servletContext.contextPath}/logout" class="button">Logout</a></li>
 		        </c:when>
 		        <c:otherwise>
 			   	  <li><a href="#">Trenutno niste ulogirani</a></li>
@@ -127,7 +127,7 @@
  					    <c:forEach var="group" items="${groups}">
     						<option value="${group.id}">
     						  <c:out value="${group.workplace.address}" />, <c:out value="${group.workplace.town}" /> 
-    						  <c:out value="${group.low}" /> do <c:out value="${group.high} godine" />
+    						  Dobna skupina: <c:out value="${group.low}" /> do <c:out value="${group.high} godina/e" />
     						</option>
   						</c:forEach>
  					 </select>
@@ -295,7 +295,11 @@
 		   </form>
 	      </c:when>
 	      <c:otherwise>
-	        <p>Upisi u vrtić trenutno nisu otvoreni</p>
+	        <h1>Vrtić "Tulipan"</h1>
+	        <p>Upisi u vrtić trenutno nisu otvoreni. Upisi se otvaraju periodićno svake godine dva puta u proljeće i jesen. Izuzetno se upisi otvaraju
+	           ako postoji puno mjesta u određenim grupama vrtića.</p>
+	        <p>U vrtić se može upisati bilo koje dijete koje zadovoljava dobnu skupinu neke grupe u vrtiću.</p>
+	        <p>Saznajte više o našim vrtićima na <a href="${pageContext.servletContext.contextPath}/pages/onama.html">ovdje</a>.
 	      </c:otherwise>
 	    </c:choose>
       </div>

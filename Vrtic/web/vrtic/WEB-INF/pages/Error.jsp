@@ -11,7 +11,7 @@
   	<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/normalize.css">
   	<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/css/foundation.css">
   	
-  	<script src="js/vendor/modernizr.js"></script>
+  	<script src="${pageContext.servletContext.contextPath}/js/vendor/modernizr.js"></script>
   </head> 
   <body>
   
@@ -33,7 +33,7 @@
 		      <c:choose >
 		        <c:when test="${sessionScope['current.user.id'] != null}">
 		          <li><a href="#">${sessionScope['current.user.fn']} ${sessionScope['current.user.ln']}</a><li>
-		          <li><a href="logout" class="button">Logout</a></li>
+		          <li><a href="${pageContext.servletContext.contextPath}/logout" class="button">Logout</a></li>
 		        </c:when>
 		        <c:otherwise>
 			   	  <li><a href="#">Trenutno niste ulogirani</a></li>

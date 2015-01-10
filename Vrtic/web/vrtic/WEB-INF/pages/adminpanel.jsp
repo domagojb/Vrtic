@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
   <head>
-    <title> Računovodstveni panel</title>
+    <title> Admin panel</title>
         
     <!-- Foundation -->
     <meta charset="utf-8">
@@ -33,7 +33,7 @@
 		      <c:choose >
 		        <c:when test="${sessionScope['current.user.id'] != null}">
 		          <li><a href="#">${sessionScope['current.user.fn']} ${sessionScope['current.user.ln']}</a><li>
-		          <li><a href="logout" class="button">Logout</a></li>
+		          <li><a href="${pageContext.servletContext.contextPath}/logout" class="button">Logout</a></li>
 		        </c:when>
 		        <c:otherwise>
 			   	  <li><a href="#">Trenutno niste ulogirani</a></li>
