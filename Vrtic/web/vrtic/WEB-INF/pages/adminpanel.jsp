@@ -96,10 +96,20 @@
 	  </div>
 	</div>
 	<div class="row">
+	  <div class="small-12 large-4 columns">		
+	    <p>Obrišite objekt iz sustava.</p>
+  	    <a class="button" href="${pageContext.servletContext.contextPath}/userpanel/removeworkplace">Obriši objekt</a> 
+  	  </div>
+  	  <div class="small-12 large-4 columns">	
+  	    <p>Obrišite grupu iz sustava.</p>
+  	    <a class="button" href="${pageContext.servletContext.contextPath}/userpanel/removegroup">Obriši grupu</a>	
+  	  </div>
       <div class="small-12 large-4 columns">
 		<p> Ispišite dijete iz vrtića </p>
 		<a class="button" href="${pageContext.servletContext.contextPath}/userpanel/removechild">Ispiši dijete</a> 
 	  </div>
+	</div>
+	<div class="row">
       <div class="small-12 large-4 columns">
 		<p> Otvorite prijave u vrtić. </p>
 		<a class="button" href="${pageContext.servletContext.contextPath}/userpanel/opensignup">Otvori prijave</a> 
@@ -108,6 +118,8 @@
 		<p> Zatvorite prijave </p>
 		<a class="button" href="${pageContext.servletContext.contextPath}/userpanel/closesignup">Zatvori prijave</a>  
 	  </div>
+	  <div class="small-12 large-4 columns">
+	  </div>  
 	</div>
   	<div class="row">
   	  <div class="large-6 columns">    

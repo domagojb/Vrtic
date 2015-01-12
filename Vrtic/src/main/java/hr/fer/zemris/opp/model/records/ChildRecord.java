@@ -85,7 +85,7 @@ public class ChildRecord {
 	 * @return the group
 	 */
 	@ManyToOne
-	@JoinColumn(nullable=false)
+	@JoinColumn(nullable=true)
 	public Group getGroup() {
 		return group;
 	}

@@ -210,6 +210,12 @@ public class JPADAOImpl implements DAO {
 	}
 	
 	@Override
+	public void removeWorkplace(long id) {
+		EntityManager em = JPAEMProvider.getEntityManager();
+		em.createQuery("DELETE FROM Workplace w WHERE w.id = :wi").setParameter("wi", id).executeUpdate();
+	}
+	
+	@Override
 	public List<Group> getAllGroups() throws DAOException {
 		EntityManager em = JPAEMProvider.getEntityManager();
 		@SuppressWarnings("unchecked")
@@ -248,6 +254,12 @@ public class JPADAOImpl implements DAO {
 	@Override
 	public void insertGroup(Group g) {
 		JPAEMProvider.getEntityManager().persist(g);
+	}
+	
+	@Override
+	public void removeGroup(long id) {
+		EntityManager em = JPAEMProvider.getEntityManager();
+		em.createQuery("DELETE FROM Group g WHERE g.id = :gi").setParameter("gi", id).executeUpdate();
 	}
 	
 	@Override

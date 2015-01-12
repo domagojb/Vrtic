@@ -198,6 +198,13 @@ public interface DAO {
 	public void insertWorplace(Workplace workplace) throws DAOException;
 	
 	/**
+	 * Removes workplace with given id.
+	 * 
+	 * @param id
+	 */
+	public void removeWorkplace(long id);
+	
+	/**
 	 * Returns all the groups in the database or <code>null</code> if there are no
 	 * groups.
 	 * 
@@ -226,6 +233,13 @@ public interface DAO {
 	 * @param g group to insert
 	 */
 	public void insertGroup(Group g);
+	
+	/**
+	 * Removes group with given id from database.
+	 * 
+	 * @param id of the group
+	 */
+	public void removeGroup(long id);
 	
 	/**
 	 * Inserts record into database.

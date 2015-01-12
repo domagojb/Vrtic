@@ -309,6 +309,7 @@
 	  	<c:choose>
 	      <c:when test="${sessionScope['current.user.id'] != null}">
 	        <p>Trenutno ste ulogirani kao ${sessionScope['current.user.fn']} ${sessionScope['current.user.ln']} <a href="logout">Logout</a></p>
+	        <h3>Brzi panel</h3>
 	        <c:choose>
 	          <c:when test="${sessionScope['current.user.t'] == 'adm'}">
 	            <div class="row">
@@ -330,6 +331,14 @@
 			  	  </div>
 			  	  <div class="small-12 large-6 columns">
 			  	    <a class="button" href="${pageContext.servletContext.contextPath}/userpanel/addgroup">Dodaj grupu</a> 
+			  	  </div>
+			  	</div>
+			  	<div class="row">			  	
+			      <div class="small-12 large-6 columns">		
+			  	    <a class="button" href="${pageContext.servletContext.contextPath}/userpanel/removeworkplace">Obriši objekt</a> 
+			  	  </div>
+			  	  <div class="small-12 large-6 columns">	
+			  	    <a class="button" href="${pageContext.servletContext.contextPath}/userpanel/removegroup">Obriši grupu</a>	
 			  	  </div>
 			  	</div>
 			    <div class="row">			  	
