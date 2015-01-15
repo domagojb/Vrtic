@@ -121,6 +121,9 @@
 	  	    <p>Utrošeno vrijeme: ${pW} minuta.
 	  	    <p>Zadovoljava kriterij: ${pW_b}</p>  	    
 	
+		  <h4>Ukupno</h4>
+		  <p>Ukupno utrošeno ${wh} minuta</p>
+		  <p>Bruto plaća po 30 kn/h: ${pay} </p>
 	   	</c:if>
 	    	   	
 	  	<a href="${pageContext.servletContext.contextPath}/userpanel">Povratak na izbornik</a>

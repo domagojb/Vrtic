@@ -115,6 +115,8 @@ public class CalculateEducatorWorktime extends HttpServlet {
 			pW_b = "Nije zadovoljeno";
 		}
 		
+		req.setAttribute("wh", eW+pW+wP+s);
+		req.setAttribute("pay", (eW+pW+wP+s)/60 * 30);
 		req.setAttribute("eW", eW);
 		req.setAttribute("eW_b", eW_b);
 		req.setAttribute("wP", wP);
