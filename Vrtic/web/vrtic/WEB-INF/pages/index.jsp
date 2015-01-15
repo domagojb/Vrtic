@@ -72,7 +72,7 @@
 		
 		    <!-- Left Nav Section -->
 		    <ul class="left">
-		      <li><a href="${pageContext.servletContext.contextPath}/pages/onama.html">O nama</a></li>
+		      <li><a href="${pageContext.servletContext.contextPath}/pages/onama.jsp">O nama</a></li>
 		      <c:if test="${sessionScope['current.user.id'] != null}">
 		        <c:choose>
 		          <c:when test="${sessionScope['current.user.t'] == 'adm'}">
@@ -296,10 +296,10 @@
 	      </c:when>
 	      <c:otherwise>
 	        <h1>Vrtić "Tulipan"</h1>
-	        <p>Upisi u vrtić trenutno nisu otvoreni. Upisi se otvaraju periodićno svake godine dva puta u proljeće i jesen. Izuzetno se upisi otvaraju
+	        <p>Upisi u vrtić trenutno nisu otvoreni. Upisi se otvaraju svake godine dva puta. U proljeće i jesen. Izuzetno se upisi otvaraju
 	           ako postoji puno mjesta u određenim grupama vrtića.</p>
 	        <p>U vrtić se može upisati bilo koje dijete koje zadovoljava dobnu skupinu neke grupe u vrtiću.</p>
-	        <p>Saznajte više o našim vrtićima na <a href="${pageContext.servletContext.contextPath}/pages/onama.html">ovdje</a>.
+	        <p>Saznajte više o našim vrtićima na <a href="${pageContext.servletContext.contextPath}/pages/onama.jsp">ovdje</a>.
 	      </c:otherwise>
 	    </c:choose>
       </div>
